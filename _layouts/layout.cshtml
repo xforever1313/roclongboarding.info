@@ -1,0 +1,138 @@
+@using System
+@using System.Collections.Generic
+@using System.Text
+@using Pretzel.Logic.Templating.Context
+@using Page = Pretzel.Logic.Templating.Context.Page
+@inherits RazorEngine.Templating.TemplateBase<Pretzel.Logic.Templating.Context.PageContext>
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta content="en-us" http-equiv="Content-Language" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    @{
+        StringBuilder tagBuilder = new StringBuilder();
+        foreach( string tag in Model.Page.Tags )
+        {
+            tagBuilder.Append( tag + "," );
+        }
+        if( tagBuilder.Length > 0 )
+        {
+            tagBuilder = tagBuilder.Remove( tagBuilder.Length - 1, 1 );
+            @:<meta name="keywords" content="@tagBuilder.ToString()" />
+        }
+
+        if( Model.Page.Bag.ContainsKey( "description" ) )
+        {
+            @:<meta name="description" content="@(Model.Page.Bag["description"])" />
+        }
+    }
+
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Blog Feed" />
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Blog Feed" />
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
+
+    <title>@Model.Title</title>
+
+    <!-- W3 Styles-->
+    <link href="/static/css/w3.css" rel="stylesheet" />
+    <link href="/static/css/w3-theme-orange.css" rel="stylesheet" />
+
+    <!-- FONTAWESOME STYLES-->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Leaflet -->
+    <link href="/static/css/leaflet.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Nav Bar -->
+    @{
+        const string navAClass = "w3-bar-item w3-button w3-padding-16";
+    }
+    <div class="w3-container w3-theme" id="theTop">
+        <nav class="w3-bar">
+            <a href="/index.html" class="@navAClass"><i class="fa fa-home"></i> Home</a>
+            @{
+                List<string> ignorePages = new List<string>() { "/", "/atom.xml", "/rss.xml", "/posts", "/sitemap.xml" };
+                foreach( Page thePage in Model.Site.Pages )
+                {
+                    if(
+                        ( ignorePages.Contains( @thePage.Id ) == false ) &&
+                        ( string.IsNullOrEmpty( @thePage.Id ) == false ) &&
+                        ( @thePage.Id.Contains( ".well-known" ) == false ) // Don't include lets encrypt stuff.
+                    )
+                    {
+                        if( thePage.Bag.ContainsKey( "icon" ) )
+                        {
+                            @:<a href="@thePage.Url" class="@navAClass"><i class="fa @thePage.Bag["icon"]"></i> @thePage.Title</a>
+                        }
+                        else
+                        {
+                            @:<a href="@thePage.Url" class="@navAClass"><i class="fa fa-circle-o"></i> @thePage.Title</a>
+                        }
+                    }
+                }
+            }
+            <div class="w3-dropdown-hover">
+                <button class="w3-button w3-padding-16">
+                    Posts <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block">
+                    <a href="/posts.html" class="w3-bar-item w3-button"><i class="fa fa-circle-o"></i> All</a>
+                    @foreach( var category in Model.Site.Categories )
+                    {
+                        foreach( var page in Model.Site.Pages )
+                        {
+                            if( page.Bag.ContainsKey( "category" ) )
+                            {
+                                if( category.Name.Equals( page.Bag["category"] ) )
+                                {
+                                    @:<a href="@(page.Url)" class="w3-bar-item w3-button"><i class="fa fa-circle-o"></i> @(category.Name)</a>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            <a href="/atom.xml" class="@navAClass"><i class="fa fa-rss"></i> ATOM Feed</a>
+        </nav>
+    </div>
+
+    <!-- Header -->
+    <header class="w3-container w3-theme w3-padding">
+        <div class="w3-center">
+            <h1 class="w3-xxxlarge w3-animate-bottom">@Model.Site.Config["title"]</h1>
+        </div>
+    </header>
+
+    <!-- Main Page  -->
+    <div id="page-wrapper">
+        @Raw( Model.Content )
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-container w3-theme w3-padding-16">
+        <p>
+            &copy; @DateTime.Now.Year <a href="https://shendrick.net">@Model.Site.Config["author"]</a> | Design By : <a href="https://www.w3schools.com/w3css/w3css_templates.asp" target="_blank">w3schools.com</a> |
+            <span>Page generated on @(DateTime.UtcNow.ToString( "R" ))</span> | Opinions are the Author's
+        </p>
+        <p>
+            Posts on <a href="/index.html">@Model.Site.Config["url"]</a> are licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+        </p>
+        <p>
+            <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+                <img alt="Creative Commons License CC BY-SA 4.0" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+            </a>
+        </p>
+        <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+            <span class="w3-text w3-theme-light w3-padding">Go To Top</span>&nbsp;   
+            <a class="w3-text-white" href="#theTop"><span class="w3-xlarge">
+            <i class="fa fa-chevron-circle-up"></i></span></a>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
+    <script src="/static/js/leaflet.js"></script>
+</body>
+</html>

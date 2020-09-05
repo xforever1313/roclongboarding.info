@@ -1,0 +1,19 @@
+pretzel: 
+    engine: razor
+
+category_pages_layout: category
+tag_pages_layout: tag
+
+# Site settings
+author: Seth Hendrick
+title: Test Site
+url: https://www.roclongboarding.net
+contact: seth@shendrick.net
+
+disqus_shortname: shendrick-net
+
+exclude:
+ - .gitignore
+ - .git
+ - .vs
+ - .vscode

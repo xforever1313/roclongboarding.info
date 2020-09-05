@@ -1,0 +1,26 @@
+---
+layout : layout
+---
+
+@inherits RazorEngine.Templating.TemplateBase<Pretzel.Logic.Templating.Context.PageContext>
+
+<article id="w3-container">
+    <header class="w3-container w3-blue-grey">
+        <h1>@Model.Page.Title</h1>
+    </header>
+    <div class="w3-padding w3-white w3-display-container">
+        <ul>
+            @{
+                foreach( var post in @Model.Site.Posts )
+                {
+                    @:<li>
+                    @:    <a href="@post.Url">@post.Title</a> - @post.Bag["description"]
+                    @:</li>
+                }
+            }
+        </ul>
+    </div>
+    <footer class="w3-container w3-blue-grey">
+        <p>&nbsp;</p>
+    </footer>
+</article>

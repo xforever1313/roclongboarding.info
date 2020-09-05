@@ -1,0 +1,88 @@
+---
+layout: layout
+---
+@inherits RazorEngine.Templating.TemplateBase<Pretzel.Logic.Templating.Context.PageContext>
+
+<article id="w3-container">
+    <header class="w3-container w3-blue-grey">
+        <h1>@Model.Page.Title</h1>
+        <p>Posted on @Model.Page.Date.ToString( "D" )</p>
+    </header>
+    <div class="w3-padding w3-white w3-display-container">
+        @Raw( Model.Content )
+    </div>
+
+    @if( Model.Comments )
+    {
+        <div class="w3-container">
+            <div id="disqus_thread"></div>
+            <script>
+
+            /**
+            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+            
+            var disqus_config = function () {
+                this.page.url = '@Model.Site.Config["url"].ToString()@Model.Page.Url';  // Replace PAGE_URL with your page's canonical URL variable
+            };
+            
+            (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://@(Model.Site.Config["disqus_shortname"].ToString()).disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+        </div>
+    }
+
+    <footer class="w3-container w3-blue-grey">
+        <div>
+            @if( Model.Previous != null )
+            {
+                <a href="@Model.Previous.Url" title="Previous Post: @Model.Previous.Title">&larr; @Model.Previous.Title</a>
+            }
+            @if( Model.Next != null )
+            {
+                <a href="@Model.Next.Url" title="next Post: @Model.Next.Title">@Model.Next.Title &rarr; </a>
+            }
+        </div>
+        <p>
+            <strong>Posted In:</strong>
+            @{
+                foreach( string category in Model.Page.Categories )
+                {
+                    foreach( var page in Model.Site.Pages )
+                    {
+                        if( page.Bag.ContainsKey( "category" ) )
+                        {
+                            if( category.Equals( page.Bag["category"] ) )
+                            {
+                                @:<a href="@(page.Url)">@(category)</a> 
+                            }
+                        }
+                    }
+                }
+            }
+        </p>
+        <p>
+            <strong>Tagged As:</strong>
+            @foreach( string tag in Model.Page.Tags )
+            {
+                foreach( var page in Model.Site.Pages )
+                {
+                    if( page.Bag.ContainsKey( "tag" ) )
+                    {
+                        if( tag.Equals( page.Bag["tag"] ) )
+                        {
+                            @:<a href="@(page.Url)">@(tag)</a>
+                        }
+                    }
+                }
+            }
+        </p>
+    </footer>
+</article>
+
