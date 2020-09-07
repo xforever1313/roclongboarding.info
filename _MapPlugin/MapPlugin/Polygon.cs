@@ -21,6 +21,13 @@ namespace MapPlugin
         {
             this.coordinates = new List<GpsCoordinate>();
             this.Coordinates = this.coordinates.AsReadOnly();
+
+            this.Id = NextId++;
+        }
+
+        static Polygon()
+        {
+            NextId = 0;
         }
 
         // ---------------- Properties ----------------
@@ -28,6 +35,10 @@ namespace MapPlugin
         public string Name { get; private set; }
 
         public IReadOnlyList<GpsCoordinate> Coordinates { get; private set; }
+
+        public int Id { get; private set; }
+
+        public static int NextId { get; private set; }
 
         // ---------------- Functions ----------------
 

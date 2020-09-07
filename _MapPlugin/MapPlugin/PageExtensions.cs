@@ -31,6 +31,16 @@ namespace MapPlugin
 
             return (bool)page.Bag[keyName];
         }
+
+        public static string GetAuthor( this Page page )
+        {
+            if( page.Bag.ContainsKey( "author" ) == false )
+            {
+                return null;
+            }
+
+            return page.Bag["author"].ToString();
+        }
     }
 
     internal static class InternalPageExtensions

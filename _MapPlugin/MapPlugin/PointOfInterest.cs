@@ -16,6 +16,12 @@ namespace MapPlugin
         public PointOfInterest()
         {
             this.Name = string.Empty;
+            this.Id = NextId++;
+        }
+
+        static PointOfInterest()
+        {
+            NextId = 0;
         }
 
         // ---------------- Properties ----------------
@@ -23,6 +29,10 @@ namespace MapPlugin
         public string Name { get; private set; }
 
         public GpsCoordinate Coordinate { get; private set; }
+
+        public int Id { get; private set; }
+
+        public static int NextId { get; private set; }
 
         // ---------------- Functions ----------------
 
