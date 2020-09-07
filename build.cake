@@ -105,7 +105,7 @@ void CheckPretzelDependency()
 
 void CheckMapPluginDependency()
 {
-    if( FileExists( mapPlugin ) )
+    if( FileExists( mapPlugin ) == false )
     {
         BuildPlugin();
     }
