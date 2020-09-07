@@ -5,6 +5,8 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 
+using System.Collections.Generic;
+
 namespace MapPlugin
 {
     public class Hazard
@@ -24,8 +26,45 @@ namespace MapPlugin
 
         // ---------------- Functions ----------------
 
-        internal void Deserialize( object bag )
+        internal void Deserialize( string context, IDictionary<string, object> dict )
         {
+            {
+                const string nameKey = "name";
+
+                if( dict.ContainsKey( nameKey ) == false )
+                {
+                    throw new PageConfigurationException(
+                        $"{nameof( Hazard )} at {context} does not contain key {nameKey}"
+                    );
+                }
+                else if( string.IsNullOrWhiteSpace( dict[nameKey].ToString() ) )
+                {
+                    throw new PageConfigurationException(
+                        $"{nameof( Hazard )} at {context} does not have a {nameKey}"
+                    );
+                }
+                else
+                {
+                    this.Name = dict[nameKey].ToString();
+                }
+            }
+
+            {
+                const string coordKey = "coord";
+
+                if( dict.ContainsKey( coordKey ) == false )
+                {
+                    throw new PageConfigurationException(
+                        $"{nameof( Hazard )} at {context} does not contain key {coordKey}"
+                    );
+                }
+
+                IList<string> coords = dict[coordKey] as IList<string>;
+
+                GpsCoordinate coord = new GpsCoordinate();
+                coord.Deserialize( $"{context}'s {coordKey}", coords );
+                this.Coordinate = coord;
+            }
         }
     }
 }

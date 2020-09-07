@@ -50,9 +50,12 @@ namespace MapPlugin
                 { 
                     try
                     {
-                        MapInfo info = new MapInfo();
-                        info.Deserialize( page );
-                        this.mapInfo.Add( page.Id, info );
+                        if( page.ShouldDisplayMap() )
+                        {
+                            MapInfo info = new MapInfo();
+                            info.Deserialize( page );
+                            this.mapInfo.Add( page.Id, info );
+                        }
                     }
                     catch( Exception e )
                     {
