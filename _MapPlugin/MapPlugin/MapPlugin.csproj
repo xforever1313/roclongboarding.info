@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net451</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pretzel.Logic" Version="0.7.0" />
+    <ProjectReference Include="..\..\_pretzel\src\Pretzel.Logic\Pretzel.Logic.csproj" />
   </ItemGroup>
 
 </Project>
