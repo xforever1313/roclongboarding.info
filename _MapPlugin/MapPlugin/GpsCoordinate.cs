@@ -37,7 +37,7 @@ namespace MapPlugin
                 );
             }
 
-            if( double.TryParse( coords[0], out double lat ) == false )
+            if( double.TryParse( coords[0], out double lat ) )
             {
                 this.Latitude = lat;
             }
@@ -48,7 +48,7 @@ namespace MapPlugin
                 );
             }
 
-            if( double.TryParse( coords[1], out double lon ) == false )
+            if( double.TryParse( coords[1], out double lon ) )
             {
                 this.Longitude = lon;
             }

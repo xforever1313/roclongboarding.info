@@ -30,6 +30,8 @@ namespace MapPlugin
         }
 
         // ---------------- Properties ----------------
+        
+        public static MapInfoCollection Instance { get; private set; }
 
         /// <summary>
         /// Dictionary that contains the map info for each page.
@@ -42,11 +44,12 @@ namespace MapPlugin
         public void Transform( SiteContext context )
         {
             List<Exception> exceptions = new List<Exception>();
+            this.mapInfo.Clear();
 
-            foreach( Page page in context.Pages )
+            foreach( Page page in context.Posts )
             {
                 // Only posts contain map information.
-                if( "location".Equals( page.Layout, StringComparison.InvariantCultureIgnoreCase ) )
+                if( page.Bag.ContainsKey( "layout" ) && "location".Equals( page.Layout, StringComparison.InvariantCultureIgnoreCase ) )
                 { 
                     try
                     {
@@ -68,6 +71,8 @@ namespace MapPlugin
             {
                 throw new AggregateException( "Error when collecting map data.", exceptions );
             }
+
+            Instance = this;
         }
     }
 }

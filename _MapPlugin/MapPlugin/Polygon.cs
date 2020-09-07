@@ -64,9 +64,18 @@ namespace MapPlugin
                     );
                 }
 
-                IList<IList<string>> coords = dict[coordKey] as IList<IList<string>>;
+                IList<object> coordsList = dict[coordKey] as IList<object>;
+                foreach( object obj in coordsList )
+                {
+                    if( ( obj is IList<string> ) == false )
+                    {
+                        throw new PageConfigurationException(
+                            $"{nameof( Polygon )} at {context} does not have a list at key {coordKey}"
+                        );
+                    }
+                }
 
-                foreach( IList<string> coordList in coords )
+                foreach( IList<string> coordList in coordsList ) // C# will cast this for us for better or for worse.
                 {
                     GpsCoordinate coord = new GpsCoordinate();
                     coord.Deserialize( $"{context}'s {coordKey}", coordList );

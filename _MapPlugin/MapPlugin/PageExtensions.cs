@@ -126,15 +126,28 @@ namespace MapPlugin
                 return null;
             }
 
-            IList<IDictionary<string, object>> dict = page.Bag[keyName] as IList<IDictionary<string, object>>;
-            if( dict == null )
+            IList<object> list = page.Bag[keyName] as IList<object>;
+            if( list == null )
             {
                 throw new PageConfigurationException(
-                    $"Page at {page.File} does not have a dictionary for {keyName}"
+                    $"Page at {page.File} does not have a list for {keyName}"
                 );
             }
 
-            return dict;
+            List<IDictionary<string, object>> dictList = new List<IDictionary<string, object>>();
+            foreach( object l in list )
+            {
+                IDictionary<string, object> dict = l as IDictionary<string, object>;
+                if( dict == null )
+                {
+                    throw new PageConfigurationException(
+                        $"Page at {page.File} does not have a dictionary for {keyName}"
+                    );
+                }
+                dictList.Add( dict );
+            }
+
+            return dictList;
         }
     }
 }
