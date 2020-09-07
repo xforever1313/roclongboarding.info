@@ -17,3 +17,6 @@ exclude:
  - .git
  - .vs
  - .vscode
+ - build.cake
+ - tools
+
