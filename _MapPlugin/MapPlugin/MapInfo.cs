@@ -55,6 +55,13 @@ namespace MapPlugin
 
             this.lamePolygons = new List<Polygon>();
             this.LamePolygons = this.lamePolygons.AsReadOnly();
+
+            this.Id = NextId++;
+        }
+
+        static MapInfo()
+        {
+            NextId = 0;
         }
 
         // ---------------- Properties ----------------
@@ -74,6 +81,10 @@ namespace MapPlugin
         public IReadOnlyList<Polygon> CoolPolygons { get; private set; }
         public IReadOnlyList<Polygon> MehPolygons { get; private set; }
         public IReadOnlyList<Polygon> LamePolygons { get; private set; }
+
+        public int Id { get; private set; }
+
+        public static int NextId { get; private set; }
 
         // ---------------- Functions ----------------
 

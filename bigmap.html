@@ -1,0 +1,152 @@
+---
+layout : layout
+title: "Full Map"
+tags: [Rochester, Longboarding, Longboard, Locations, Map, OpenStreetMap, OSM]
+icon: "fa-map-o"
+---
+
+@using System.Text;
+@using MapPlugin;
+
+<article id="w3-container">
+    <header class="w3-container w3-blue-grey">
+        <h1>Full Map</h1>
+    </header>
+    <div class="w3-padding w3-white w3-display-container">
+        <noscript>JavaScript Required to make a map.</noscript>
+        <div id="mapid" style="width: 100%;height: 500px;"></div>
+    </div>
+    <footer class="w3-container w3-blue-grey">
+        <p>
+            This map contains all the locations that this site has a page of.
+            Click on a marker to get a link to it.
+        </p>
+    </footer>
+</article>
+
+@{
+    MapInfoCollection allInfo = MapInfoCollection.Instance;
+    Func<IReadOnlyList<GpsCoordinate>, string> getCoords = delegate( IReadOnlyList<GpsCoordinate> coords )
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append( "[" );
+        foreach( GpsCoordinate coord in coords )
+        {
+            builder.Append( $"[{coord.Latitude}, {coord.Longitude}],");
+        }
+
+        builder.Remove( builder.Length - 1, 1 );
+        builder.Append( "]");
+        return builder.ToString();
+    };
+}
+
+<!-- SCRIPTS -AT THE BOTTOM TO REDUCE THE LOAD TIME-->
+<script src="/static/js/leaflet.js"></script>
+<script>
+    // Create Map, set it at RIT to start.
+    var map = L.map('mapid').setView([43.085, -77.678419], 13);
+
+    // Pull from OSM API
+    var osmURL = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+    // In order to use open street map, we need to attribute to it.
+    var osmAttrib = 'Map Data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+    // Create the OSM layer.
+    var osm = new L.TileLayer( osmURL, { minZoom: 0, maxZoom: 18, attribution: osmAttrib});
+
+    // Add the osm layer to the map
+    map.addLayer(osm);
+
+    // Create Icon
+    var centerIcon = L.icon({
+        iconUrl: "/static/img/leaflet/marker-icon.png",
+        iconSize: [25, 41],
+        iconAnchor:[12.5, 41],
+        popupAnchor:[0, -30]
+    });
+
+    @foreach( KeyValuePair<string, MapInfo> pageInfo in allInfo.PageMapInfo )
+    {
+        Pretzel.Logic.Templating.Context.Page page = Model.Site.Posts.Where( p => p.Id == pageInfo.Key ).First();
+        MapInfo info = pageInfo.Value;
+
+        <text>
+            var mapInfoHtml_@(info.Id) = '<div class="left" style="overflow: auto; color: black;">';
+            mapInfoHtml_@(info.Id) += '<p><strong>@page.Title</strong></p>';
+            mapInfoHtml_@(info.Id) += '<p><strong>Rating:</strong> @info.OverallRating</p>';
+            mapInfoHtml_@(info.Id) += '<p><a href="@page.Url" target="_blank">Read Article</p>';
+            mapInfoHtml_@(info.Id) += '</div>';
+
+            var mapInfoPopup_@(info.Id) = L.popup({maxwidth:500}).setContent(mapInfoHtml_@(info.Id));
+            var mapInfoMarker_@(info.Id) = L.marker([@info.CenterPoint.Latitude, @info.CenterPoint.Longitude]).setIcon(centerIcon).addTo(map).bindPopup(mapInfoPopup_@(info.Id));
+        </text>
+
+        // Add the Good Lines
+        @foreach( Line coolLine in info.CoolLines )
+        {
+            string coordString = getCoords( coolLine.Coordinates );
+            <text>
+                var coolLine_@(coolLine.Id)_options = { color: 'green' };
+                var coolLine_@(coolLine.Id) = L.polyline( @coordString, coolLine_@(coolLine.Id)_options );
+                coolLine_@(coolLine.Id).addTo(map);
+            </text>
+        }
+
+        // Add the Meh Lines
+        @foreach( Line mehLine in info.MehLines )
+        {
+            string coordString = getCoords( mehLine.Coordinates );
+            <text>
+                var mehLine_@(mehLine.Id)_options = { color: 'yellow' };
+                var mehLine_@(mehLine.Id) = L.polyline( @coordString, mehLine_@(mehLine.Id)_options );
+                mehLine_@(mehLine.Id).addTo(map);
+            </text>
+        }
+
+        // Add the Lame Lines
+        @foreach( Line lameLine in info.LameLines )
+        {
+            string coordString = getCoords( lameLine.Coordinates );
+            <text>
+                var lameLine_@(lameLine.Id)_options = { color: 'red' };
+                var lameLine_@(lameLine.Id) = L.polyline( @coordString, lameLine_@(lameLine.Id)_options );
+                lameLine_@(lameLine.Id).addTo(map);
+            </text>
+        }
+
+        // Add the Good Polygons
+        @foreach( Polygon coolPolygon in info.CoolPolygons )
+        {
+            string coordString = getCoords( coolPolygon.Coordinates );
+            <text>
+                var coolPolygon_@(coolPolygon.Id)_options = { color: 'green' };
+                var coolPolygon_@(coolPolygon.Id) = L.polygon( @coordString, coolPolygon_@(coolPolygon.Id)_options );
+                coolPolygon_@(coolPolygon.Id).addTo(map);
+            </text>
+        }
+
+        // Add the Meh Polygons
+        @foreach( Polygon mehPolygon in info.MehPolygons )
+        {
+            string coordString = getCoords( mehPolygon.Coordinates );
+            <text>
+                var mehPolygon_@(mehPolygon.Id)_options = { color: 'yellow' };
+                var mehPolygon_@(mehPolygon.Id) = L.polygon( @coordString, mehPolygon_@(mehPolygon.Id)_options );
+                mehPolygon_@(mehPolygon.Id).addTo(map);
+            </text>
+        }
+
+        // Add the Lame Polygons
+        @foreach( Polygon lamePolygon in info.LamePolygons )
+        {
+            string coordString = getCoords( lamePolygon.Coordinates );
+            <text>
+                var lamePolygon_@(lamePolygon.Id)_options = { color: 'red' };
+                var lamePolygon_@(lamePolygon.Id) = L.polygon( @coordString, lamePolygon_@(lamePolygon.Id)_options );
+                lamePolygon_@(lamePolygon.Id).addTo(map);
+            </text>
+        }
+    }
+</script>
