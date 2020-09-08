@@ -1,20 +1,16 @@
 ---
 layout: page
 title: Home
-description: "Seth Hendrick's website!"
+description: "Information on where to longboard in Rochester"
 comments: false
 ---
 
 # Welcome!
 
-My name is Seth!
+This website's purpose is to catalog as many safe places to longboard in the Rochester Region.  Each post on this website has a location that specifies if a place is able to be longboarded, is it safe to longboard, what to watch out for while longboarding there, and overall, is a cool, meh, or lame place to longboard.
 
- * I am a Computer Engineer.
- * I graduated from RIT with a B.S. in Computer Engineering in 2014.
- * I currently work at Harris Corporation as a Software Engineer, where I write Automated Tests.
- * My favorite programming languages are C#, C++, and Python.
- * My favorite color is green.
+You can view all of the locations that have been written about on our [map](/bigmap.html).  You can also see a list [here](/posts.html), but all of the cool spots can be viewed [here](/category/cool-places/index.html).
 
-You can find more of me on the internet by clicking on the links on the sidebar.
+This website statically-generated is entirely open source, one can view it on [GitHub](https://github.com/xforever1313/roclongboarding.info).  Submissions are also welcome, see our [submission](/submit.html) for information on that.
 
-Welcome to my site!   Hopefully you learn something!
+So, please explore the site for ideas on where to longboard.  And remember, to wear a helmit!
