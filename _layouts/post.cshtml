@@ -167,6 +167,16 @@ layout: layout
             var poiPopup_@(poi.Id) = L.popup({maxwidth:500}).setContent(poiHtml_@(poi.Id));
             var poiMarker_@(poi.Id) = L.marker([@poi.Coordinate.Latitude, @poi.Coordinate.Longitude]).setIcon(poiIcon).addTo(map).bindPopup(poiPopup_@(poi.Id));
             </text>
+            if( string.IsNullOrWhiteSpace(poi.DocId) == false )
+            {
+                <text>
+                    document.getElementById( '@poi.DocId' ).onclick = function (){
+                        poiMarker_@(poi.Id).openPopup();
+                        map.setView( [@poi.Coordinate.Latitude, @poi.Coordinate.Longitude] );
+                        return false;
+                    };
+                </text>
+            }
         }
 
         // Create Hazard Icon
@@ -185,6 +195,16 @@ layout: layout
             var hazardPopup_@(hazard.Id) = L.popup({maxwidth:500}).setContent(hazardHtml_@(hazard.Id));
             var hazardMarker_@(hazard.Id) = L.marker([@hazard.Coordinate.Latitude, @hazard.Coordinate.Longitude]).setIcon(hazardIcon).addTo(map).bindPopup(hazardPopup_@(hazard.Id));
             </text>
+            if( string.IsNullOrWhiteSpace(hazard.DocId) == false )
+            {
+                <text>
+                    document.getElementById( '@hazard.DocId' ).onclick = function (){
+                        hazardMarker_@(hazard.Id).openPopup();
+                        map.setView( [@hazard.Coordinate.Latitude, @hazard.Coordinate.Longitude] );
+                        return false;
+                    };
+                </text>
+            }
         }
 
         // Add the Good Lines

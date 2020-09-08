@@ -30,6 +30,8 @@ namespace MapPlugin
 
         public GpsCoordinate Coordinate { get; private set; }
 
+        public string DocId { get; private set; }
+
         public int Id { get; private set; }
 
         public static int NextId { get; private set; }
@@ -74,6 +76,20 @@ namespace MapPlugin
                 GpsCoordinate coord = new GpsCoordinate();
                 coord.Deserialize( $"{context}'s {coordKey}", coords );
                 this.Coordinate = coord;
+            }
+
+            {
+                const string nameKey = "docid";
+
+                if( dict.ContainsKey( nameKey ) == false )
+                {
+                    // Optional.
+                    return;
+                }
+                else if( string.IsNullOrWhiteSpace( dict[nameKey].ToString() ) == false )
+                {
+                    this.DocId = dict[nameKey].ToString();
+                }
             }
         }
     }
