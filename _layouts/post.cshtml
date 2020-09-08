@@ -16,6 +16,8 @@ layout: layout
         Model.Page.Bag.ContainsKey( "layout" ) && 
         ( Model.Page.Layout == "location" ) &&
         Model.Page.ShouldDisplayElevation();
+
+    MapInfo mapInfo = MapInfoCollection.Instance.PageMapInfo[Model.Page.Id];
 }
 
 <article id="w3-container">
@@ -43,47 +45,50 @@ layout: layout
         </div>
     }
 
-    @if( displayElevation )
-    {
-        MapInfo mapInfo = MapInfoCollection.Instance.PageMapInfo[Model.Page.Id];
-        <div class="w3-padding w3-white w3-display-container">
-            <h2>Elevation Data</h2>
-            @foreach( IEnumerable<Line> lines in new IEnumerable<Line>[]{ mapInfo.CoolLines, mapInfo.MehLines, mapInfo.LameLines } )
+    <div class="w3-padding w3-white w3-display-container">
+        <h2>Segment Data</h2>
+        @foreach( IEnumerable<Line> lines in new IEnumerable<Line>[]{ mapInfo.CoolLines, mapInfo.MehLines, mapInfo.LameLines } )
+        {
+            @foreach( Line line in lines )
             {
-                @foreach( Line line in lines )
+                string rating;
+                if( object.ReferenceEquals( lines, mapInfo.CoolLines ) )
                 {
-                    string rating;
-                    if( object.ReferenceEquals( lines, mapInfo.CoolLines ) )
-                    {
-                        rating = Rating.Cool.ToString();
-                    }
-                    else if( object.ReferenceEquals( lines, mapInfo.MehLines ) )
-                    {
-                        rating = Rating.Meh.ToString();
-                    }
-                    else
-                    {
-                        rating = Rating.Lame.ToString();
-                    }
+                    rating = Rating.Cool.ToString();
+                }
+                else if( object.ReferenceEquals( lines, mapInfo.MehLines ) )
+                {
+                    rating = Rating.Meh.ToString();
+                }
+                else
+                {
+                    rating = Rating.Lame.ToString();
+                }
 
-                    <h3>@line.Name</h3>
-                    <ul>
-                        <li><strong>Segment Rating:</strong> @rating</li>
+                <h3>@line.Name</h3>
+                <ul>
+                    <li><strong>Segment Rating:</strong> @rating</li>
+                    @if( displayElevation )
+                    {
                         <li><strong>Minimum Elevation:</strong> @line.Coordinates.Min( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
                         <li><strong>Maximum Elevation:</strong> @line.Coordinates.Max( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
                         <li><strong>Average Elevation:</strong> @line.Coordinates.Average( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
-                        @if( displayMap )
-                        {
-                            <li><a href="#" id="startLineLink_@line.Id">View Start On Map</a></li>
-                            <li><a href="#" id="endLineLink_@line.Id">View End On Map</a></li>
-                        }
-                    </ul>
-                    <noscript>JavaScript Required to make a graph.</noscript>
-                    <div id="elevMap@line.Id"></div>
+                    }
+                    @if( displayMap )
+                    {
+                        <li><a href="#" id="startLineLink_@line.Id">View Start On Map</a></li>
+                        <li><a href="#" id="endLineLink_@line.Id">View End On Map</a></li>
+                    }
+                </ul>
+                @if( displayElevation )
+                {
+                    <h4>Elevation</h4>
+                    <noscript>JavaScript required to make a graph.</noscript>
+                    <div id="elevGraph@line.Id"></div>
                 }
             }
-        </div>
-    }
+        }
+    </div>
 
     @if( Model.Comments )
     {
@@ -289,6 +294,12 @@ layout: layout
                         { color: 'green' }
                     ).setRadius( 5 );
                     lineStartMarker_@(line.Id).addTo(map).bindPopup(lineStartPopup_@(line.Id));
+                    document.getElementById( 'startLineLink_@line.Id' ).onclick = function()
+                    {
+                        lineStartMarker_@(line.Id).openPopup();
+                        map.setView( [@startPoint.Latitude, @startPoint.Longitude] );
+                        return false;
+                    };
 
                     var lineEndHtml_@(line.Id) = '<div class="left" style="overflow: auto; color: black;">End: @line.Name</div>';
                     var lineEndPopup_@(line.Id) = L.popup({maxwidth:500}).setContent(lineEndHtml_@(line.Id));
@@ -297,26 +308,13 @@ layout: layout
                         { color: 'red' }
                     ).setRadius( 5 );
                     lineEndMarker_@(line.Id).addTo(map).bindPopup(lineEndPopup_@(line.Id));
+                    document.getElementById( 'endLineLink_@line.Id' ).onclick = function()
+                    {
+                        lineEndMarker_@(line.Id).openPopup();
+                        map.setView( [@endPoint.Latitude, @endPoint.Longitude] );
+                        return false;
+                    };
                 </text>
-
-                @if( displayElevation )
-                {
-                    <text>
-                        document.getElementById( 'startLineLink_@line.Id' ).onclick = function()
-                        {
-                            lineStartMarker_@(line.Id).openPopup();
-                            map.setView( [@startPoint.Latitude, @startPoint.Longitude] );
-                            return false;
-                        };
-
-                        document.getElementById( 'endLineLink_@line.Id' ).onclick = function()
-                        {
-                            lineEndMarker_@(line.Id).openPopup();
-                            map.setView( [@endPoint.Latitude, @endPoint.Longitude] );
-                            return false;
-                        };
-                    </text>
-                }
             }
         }
 
