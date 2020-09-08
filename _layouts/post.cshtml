@@ -257,53 +257,47 @@ layout: layout
             }
         }
 
-        // Add the Good Lines
-        @foreach( Line coolLine in info.CoolLines )
+        @foreach( IEnumerable<Line> lines in new IEnumerable<Line>[] { info.CoolLines, info.MehLines, info.LameLines } )
         {
-            string coordString = getCoords( coolLine.Coordinates );
-            <text>
-                var coolLine_@(coolLine.Id)_options = { color: 'green' };
-                var coolLine_@(coolLine.Id) = L.polyline( @coordString, coolLine_@(coolLine.Id)_options );
-                coolLine_@(coolLine.Id).addTo(map);
+            @foreach( Line line in lines )
+            {
+                string coordString = getCoords( line.Coordinates );
+                string color;
+                if( object.ReferenceEquals( lines, info.CoolLines ) )
+                {
+                    color = "green";
+                }
+                else if( object.ReferenceEquals( lines, info.MehLines ) )
+                {
+                    color = "yellow";
+                }
+                else
+                {
+                    color = "red";
+                }
 
-                var coolLineStartHtml_@(coolLine.Id) = '<div class="left" style="overflow: auto; color: black;">Start: @coolLine.Name</div>';
-                var coolLineStartPopup_@(coolLine.Id) = L.popup({maxwidth:500}).setContent(coolLineStartHtml_@(coolLine.Id));
-                var coolLineStartMarker_@(coolLine.Id) = L.circleMarker(
-                    [@coolLine.Coordinates.First().Latitude, @coolLine.Coordinates.First().Longitude],
-                    { color: 'green' }
-                ).setRadius( 5 );
-                coolLineStartMarker_@(coolLine.Id).addTo(map).bindPopup(coolLineStartPopup_@(coolLine.Id));
+                <text>
+                    var line_@(line.Id)_options = { color: '@color' };
+                    var line_@(line.Id) = L.polyline( @coordString, line_@(line.Id)_options );
+                    line_@(line.Id).addTo(map);
 
-                var coolLineEndHtml_@(coolLine.Id) = '<div class="left" style="overflow: auto; color: black;">End: @coolLine.Name</div>';
-                var coolLineEndPopup_@(coolLine.Id) = L.popup({maxwidth:500}).setContent(coolLineEndHtml_@(coolLine.Id));
-                var coolLineEndMarker_@(coolLine.Id) = L.circleMarker(
-                    [@coolLine.Coordinates.Last().Latitude, @coolLine.Coordinates.Last().Longitude],
-                    { color: 'red' }
-                ).setRadius( 5 );
-                coolLineEndMarker_@(coolLine.Id).addTo(map).bindPopup(coolLineEndPopup_@(coolLine.Id));
-            </text>
-        }
+                    var lineStartHtml_@(line.Id) = '<div class="left" style="overflow: auto; color: black;">Start: @line.Name</div>';
+                    var lineStartPopup_@(line.Id) = L.popup({maxwidth:500}).setContent(lineStartHtml_@(line.Id));
+                    var lineStartMarker_@(line.Id) = L.circleMarker(
+                        [@line.Coordinates.First().Latitude, @line.Coordinates.First().Longitude],
+                        { color: 'green' }
+                    ).setRadius( 5 );
+                    lineStartMarker_@(line.Id).addTo(map).bindPopup(lineStartPopup_@(line.Id));
 
-        // Add the Meh Lines
-        @foreach( Line mehLine in info.MehLines )
-        {
-            string coordString = getCoords( mehLine.Coordinates );
-            <text>
-                var mehLine_@(mehLine.Id)_options = { color: 'yellow' };
-                var mehLine_@(mehLine.Id) = L.polyline( @coordString, mehLine_@(mehLine.Id)_options );
-                mehLine_@(mehLine.Id).addTo(map);
-            </text>
-        }
-
-        // Add the Lame Lines
-        @foreach( Line lameLine in info.LameLines )
-        {
-            string coordString = getCoords( lameLine.Coordinates );
-            <text>
-                var lameLine_@(lameLine.Id)_options = { color: 'red' };
-                var lameLine_@(lameLine.Id) = L.polyline( @coordString, lameLine_@(lameLine.Id)_options );
-                lameLine_@(lameLine.Id).addTo(map);
-            </text>
+                    var lineEndHtml_@(line.Id) = '<div class="left" style="overflow: auto; color: black;">End: @line.Name</div>';
+                    var lineEndPopup_@(line.Id) = L.popup({maxwidth:500}).setContent(lineEndHtml_@(line.Id));
+                    var lineEndMarker_@(line.Id) = L.circleMarker(
+                        [@line.Coordinates.Last().Latitude, @line.Coordinates.Last().Longitude],
+                        { color: 'red' }
+                    ).setRadius( 5 );
+                    lineEndMarker_@(line.Id).addTo(map).bindPopup(lineEndPopup_@(line.Id));
+                </text>
+            }
         }
 
         // Add the Good Polygons
