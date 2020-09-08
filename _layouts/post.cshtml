@@ -82,9 +82,10 @@ layout: layout
                 </ul>
                 @if( displayElevation )
                 {
-                    <h4>Elevation</h4>
-                    <noscript>JavaScript required to make a graph.</noscript>
-                    <div id="elevGraph@line.Id"></div>
+                    <noscript>JavaScript required to make an elevation graph.</noscript>
+                    <div style="width:75%;">
+                        <canvas id="elevGraph_@(line.Id)"></canvas>
+                    </div>
                 }
             }
         }
@@ -168,7 +169,6 @@ layout: layout
 
 @if( displayMap )
 {
-    MapInfo info = MapInfoCollection.Instance.PageMapInfo[Model.Page.Id];
     Func<IReadOnlyList<GpsCoordinate>, string> getCoords = delegate( IReadOnlyList<GpsCoordinate> coords )
     {
         StringBuilder builder = new StringBuilder();
@@ -187,7 +187,7 @@ layout: layout
     <script src="/static/js/leaflet.js"></script>
     <script>
         // Create Map
-        var map = L.map('mapid').setView([@info.CenterPoint.Latitude, @info.CenterPoint.Longitude], 13);
+        var map = L.map('mapid').setView([@mapInfo.CenterPoint.Latitude, @mapInfo.CenterPoint.Longitude], 13);
 
         // Pull from OSM API
         var osmURL = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -213,7 +213,7 @@ layout: layout
         });
 
         // Add the points of interest
-        @foreach( PointOfInterest poi in info.PointsOfInterest )
+        @foreach( PointOfInterest poi in mapInfo.PointsOfInterest )
         {
             <text>
             var poiHtml_@(poi.Id) = '<div class="left" style="overflow: auto; color: black;">@poi.Name</div>';
@@ -241,7 +241,7 @@ layout: layout
         });
 
         // Add the Hazards
-        @foreach( Hazard hazard in info.Hazards )
+        @foreach( Hazard hazard in mapInfo.Hazards )
         {
             <text>
             var hazardHtml_@(hazard.Id) = '<div class="left" style="overflow: auto; color: black;">@hazard.Name</div>';
@@ -260,17 +260,17 @@ layout: layout
             }
         }
 
-        @foreach( IEnumerable<Line> lines in new IEnumerable<Line>[] { info.CoolLines, info.MehLines, info.LameLines } )
+        @foreach( IEnumerable<Line> lines in new IEnumerable<Line>[] { mapInfo.CoolLines, mapInfo.MehLines, mapInfo.LameLines } )
         {
             @foreach( Line line in lines )
             {
                 string coordString = getCoords( line.Coordinates );
                 string color;
-                if( object.ReferenceEquals( lines, info.CoolLines ) )
+                if( object.ReferenceEquals( lines, mapInfo.CoolLines ) )
                 {
                     color = "green";
                 }
-                else if( object.ReferenceEquals( lines, info.MehLines ) )
+                else if( object.ReferenceEquals( lines, mapInfo.MehLines ) )
                 {
                     color = "yellow";
                 }
@@ -319,7 +319,7 @@ layout: layout
         }
 
         // Add the Good Polygons
-        @foreach( Polygon coolPolygon in info.CoolPolygons )
+        @foreach( Polygon coolPolygon in mapInfo.CoolPolygons )
         {
             string coordString = getCoords( coolPolygon.Coordinates );
             <text>
@@ -330,7 +330,7 @@ layout: layout
         }
 
         // Add the Meh Polygons
-        @foreach( Polygon mehPolygon in info.MehPolygons )
+        @foreach( Polygon mehPolygon in mapInfo.MehPolygons )
         {
             string coordString = getCoords( mehPolygon.Coordinates );
             <text>
@@ -341,7 +341,7 @@ layout: layout
         }
 
         // Add the Lame Polygons
-        @foreach( Polygon lamePolygon in info.LamePolygons )
+        @foreach( Polygon lamePolygon in mapInfo.LamePolygons )
         {
             string coordString = getCoords( lamePolygon.Coordinates );
             <text>
@@ -355,4 +355,82 @@ layout: layout
 
 @if( displayElevation )
 {
+    Func<Line, string> getElevationPoints = delegate( Line line )
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append( "[" );
+        for( int i = 0; i < line.Coordinates.Count; ++i )
+        {
+            builder.Append( i + "," );
+        }
+
+        builder.Remove( builder.Length - 1, 1 );
+        builder.Append( "]" );
+        return builder.ToString();
+    };
+
+    Func<Line, string> getElevationData = delegate( Line line )
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append( "[" );
+        for( int i = 0; i < line.Coordinates.Count; ++i )
+        {
+            builder.Append( ( line.Coordinates[i].Elevation ?? 0 ).ToString()  + "," );
+        }
+
+        builder.Remove( builder.Length - 1, 1 );
+        builder.Append( "]" );
+        return builder.ToString();
+    };
+
+    <script src="/static/js/chart.min.js"></script>
+    <script>
+        @foreach( IEnumerable<Line> lines in new IEnumerable<Line>[] { mapInfo.CoolLines, mapInfo.MehLines, mapInfo.LameLines } )
+        {
+            @foreach( Line line in lines )
+            {
+                <text>
+                    var elevationGraphConfig_@(line.Id) = {
+                        type: 'line',
+                        data: {
+                            labels: @getElevationPoints( line ),
+                            datasets: [{
+                                label: 'Elevation',
+                                backgroundColor: 'red',
+                                borderColor: 'red',
+                                data: @getElevationData( line ),
+                                fill: false
+                            }]
+                        },
+                        options: {
+                            responsive: false,
+                            title: {
+                                display: true,
+                                text: '@line.Name Elevation',
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: false,
+                                    scaleLabel: {
+                                        display: false,
+                                        labelString: ''
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Meters'
+                                    }
+                                }]
+                            }
+                        }
+                    };
+
+                    var ctx_@(line.Id) = document.getElementById('elevGraph_@(line.Id)').getContext('2d');
+                    var elevationChart_@(line.Id) = new Chart( ctx_@(line.Id), elevationGraphConfig_@(line.Id));
+                </text>
+            }
+        }
+    </script>
 }
