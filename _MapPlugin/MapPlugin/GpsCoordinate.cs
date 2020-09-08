@@ -18,7 +18,43 @@ namespace MapPlugin
 
         public double Longitude { get; set; }
 
+        /// <summary>
+        /// The elevation of the GPS coordinate.
+        /// Null for none specified.
+        /// </summary>
+        public double? Elevation { get; set; }
+
         // ---------------- Functions ----------------
+
+        public override bool Equals( object obj )
+        {
+            if( obj is GpsCoordinate coordinate )
+            {
+                return Equals( coordinate );
+            }
+
+            return false;
+        }
+
+        public bool Equals( GpsCoordinate other )
+        {
+            return
+                EqualsIgnoreElevation( other ) &&
+                ( this.Elevation == other.Elevation );
+        }
+
+        public bool EqualsIgnoreElevation( GpsCoordinate other )
+        {
+            return
+                ( this.Latitude == other.Latitude ) &&
+                ( this.Longitude == other.Longitude );
+        }
+
+        public override int GetHashCode()
+        {
+            // Mutable.  Return base implementation.
+            return base.GetHashCode();
+        }
 
         internal void Deserialize( string context, IList<string> coords )
         {
@@ -30,7 +66,7 @@ namespace MapPlugin
                 );
             }
 
-            if( coords.Count != 2 )
+            if( ( coords.Count != 2 ) && ( coords.Count != 3 ) )
             {
                 throw new PageConfigurationException(
                     $"{nameof( GpsCoordinate )} list at {context} is not 2 elements long"
@@ -57,6 +93,24 @@ namespace MapPlugin
                 throw new PageConfigurationException(
                     $"{nameof( Longitude )} at {context} is not a double. Got: {coords[1]}"
                 );
+            }
+
+            if( coords.Count == 3 )
+            {
+                if( double.TryParse( coords[2], out double elev ) )
+                {
+                    this.Elevation = elev;
+                }
+                else
+                {
+                    throw new PageConfigurationException(
+                        $"{nameof( Elevation )} at {context} is not a double. Got: {coords[2]}"
+                    );
+                }
+            }
+            else
+            {
+                this.Elevation = null;
             }
         }
     }

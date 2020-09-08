@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Pretzel.Logic.Templating.Context;
 
 namespace MapPlugin
@@ -210,13 +211,25 @@ namespace MapPlugin
             {
                 Line line = new Line();
                 line.Deserialize( $"{context.File} {rating}", l );
+
+                if( context.ShouldDisplayElevation() )
+                {
+                    int count = line.Coordinates.Where( c => c.Elevation == null ).Count();
+                    if( count != 0 )
+                    {
+                        throw new PageConfigurationException(
+                            $"Elevation is enabled in {context.File}, but there exists {count} coordinate(s) in {rating} {nameof( Line )} that does not contain one."
+                        );
+                    }
+                }
+
                 addAction( line );
             }
         }
 
         private void DeterminePolygons( Page context, Rating rating, Action<Polygon> addAction )
         {
-            IList<IDictionary<string, object>> polys = context.GetLines( rating );
+            IList<IDictionary<string, object>> polys = context.GetPolys( rating );
             if( polys == null )
             {
                 return;

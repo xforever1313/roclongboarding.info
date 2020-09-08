@@ -17,5 +17,10 @@ namespace MapPlugin
             base( message )
         {
         }
+
+        public PageConfigurationException( string message, Exception innerException ) :
+            base( message, innerException )
+        {
+        }
     }
 }

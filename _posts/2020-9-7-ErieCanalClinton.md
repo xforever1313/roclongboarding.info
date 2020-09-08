@@ -8,6 +8,7 @@ description: "The stretch of the Erie Canal Trail between Clinton Ave and Lock 3
 tags: [Erie Canal Trail, Canal, Lock 33]
 
 display_map: true
+display_elevation: true
 center_point: [43.102953, -77.590331]
 
 points_of_interest:
@@ -20,7 +21,7 @@ points_of_interest:
 
 cool_lines:
     - name: Trail
-      coords: [[43.105683, -77.599708], [43.096091,  -77.569141]]
+      coords: "./_gpxdata/ErieCanalClintonLock33.gpx"
 
 ---
 

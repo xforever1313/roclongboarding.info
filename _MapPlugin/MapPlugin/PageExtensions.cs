@@ -32,6 +32,25 @@ namespace MapPlugin
             return (bool)page.Bag[keyName];
         }
 
+        public static bool ShouldDisplayElevation( this Page page )
+        {
+            const string keyName = "display_elevation";
+
+            if( page.Bag.ContainsKey( keyName ) == false )
+            {
+                return false;
+            }
+
+            if( ( page.Bag[keyName] is bool ) == false )
+            {
+                throw new PageConfigurationException(
+                    $"Page at {page.File} does not have a {nameof( Boolean )} set for {keyName}"
+                );
+            }
+
+            return (bool)page.Bag[keyName];
+        }
+
         public static string GetAuthor( this Page page )
         {
             if( page.Bag.ContainsKey( "author" ) == false )
