@@ -8,3 +8,4 @@ _site
 .pretzel/
 public/
 _plugins
+tools

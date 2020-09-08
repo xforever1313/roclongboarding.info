@@ -1,5 +1,9 @@
 string target = Argument( "target", "taste" );
 
+const string gpsDataFolder = "./_gpxdata";
+
+#load "_cakefiles/GpxModifier.cake"
+
 const string pretzelExe = "./_pretzel/src/Pretzel/bin/Debug/netcoreapp3.1/Pretzel.dll";
 const string pluginDir = "./_plugins";
 const string categoryPlugin = "./_plugins/Pretzel.Categories.dll";
