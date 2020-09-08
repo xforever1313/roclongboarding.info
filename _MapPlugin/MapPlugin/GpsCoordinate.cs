@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using Geodesy;
 
 namespace MapPlugin
 {
@@ -112,6 +113,35 @@ namespace MapPlugin
             {
                 this.Elevation = null;
             }
+        }
+    }
+
+    public static class GpsCoordinateExtensions
+    {
+        public static double CalculateDistanceKm( this IReadOnlyList<GpsCoordinate> coords )
+        {
+            double distance = 0;
+            GeodeticCalculator geoCalc = new GeodeticCalculator( Ellipsoid.WGS84 );
+
+            for( int i = 0; i < ( coords.Count - 1 ); ++i )
+            {
+                GlobalCoordinates startCords = new GlobalCoordinates(
+                    new Angle( coords[i].Latitude ),
+                    new Angle( coords[i].Longitude )
+                );
+                GlobalPosition startPos = new GlobalPosition( startCords );
+
+                GlobalCoordinates endCords = new GlobalCoordinates(
+                    new Angle( coords[i + 1].Latitude ),
+                    new Angle( coords[i + 1].Longitude )
+                );
+                GlobalPosition endPos = new GlobalPosition( endCords );
+
+                GeodeticMeasurement result = geoCalc.CalculateGeodeticMeasurement( startPos, endPos );
+                distance += result.PointToPointDistance;
+            }
+
+            return distance / 1000.0;
         }
     }
 }

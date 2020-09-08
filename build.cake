@@ -67,16 +67,22 @@ void BuildPlugin()
 
     Information( "Building Plugin..." );
 
-    DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings
+    DotNetCorePublishSettings  settings = new DotNetCorePublishSettings
     {
-        Configuration = "Debug"
+        Configuration = "Debug",
+        NoBuild = false,
+        NoRestore = false,
+        PublishTrimmed = true
     };
 
-    DotNetCoreBuild( "./_MapPlugin/MapPlugin.sln", settings );
+    DotNetCorePublish( "./_MapPlugin/MapPlugin.sln", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection categoryFiles = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.0/MapPlugin.*" );
-    CopyFiles( categoryFiles, Directory( pluginDir ) );
+    FilePathCollection files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.0/publish/MapPlugin.*" );
+    CopyFiles( files, Directory( pluginDir ) );
+
+    files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.0/publish/Geodesy.*" );
+    CopyFiles( files, Directory( pluginDir ) );
 
     Information( "Building Plugin... Done!" );
 }

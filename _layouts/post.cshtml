@@ -65,9 +65,13 @@ layout: layout
                     rating = Rating.Lame.ToString();
                 }
 
+                double distanceKm = @line.Coordinates.CalculateDistanceKm();
+                double distanceMiles = Conversions.KmToMiles( distanceKm );
+
                 <h3>@line.Name</h3>
                 <ul>
                     <li><strong>Segment Rating:</strong> @rating</li>
+                    <li><strong>Segment Length:</strong> @distanceMiles.ToString( "F" ) miles (@distanceKm.ToString("F") kilometers).</li>
                     @if( displayElevation )
                     {
                         <li><strong>Minimum Elevation:</strong> @line.Coordinates.Min( c => c.Elevation.Value ).ToString( "F" ) meters.</li>

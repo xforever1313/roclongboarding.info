@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Geodesy" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\_pretzel\src\Pretzel.Logic\Pretzel.Logic.csproj" />
   </ItemGroup>
 
