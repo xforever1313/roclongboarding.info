@@ -2,6 +2,7 @@
 layout: layout
 ---
 
+@using System.Linq;
 @using System.Text;
 @using MapPlugin;
 
@@ -10,6 +11,11 @@ layout: layout
         Model.Page.Bag.ContainsKey( "layout" ) && 
         ( Model.Page.Layout == "location" ) &&
         Model.Page.ShouldDisplayMap();
+
+    bool displayElevation =
+        Model.Page.Bag.ContainsKey( "layout" ) && 
+        ( Model.Page.Layout == "location" ) &&
+        Model.Page.ShouldDisplayElevation();
 }
 
 <article id="w3-container">
@@ -34,6 +40,50 @@ layout: layout
             <h2>Map</h2>
             <noscript>JavaScript Required to make a map.</noscript>
             <div id="mapid" style="width=100%;height:500px;"></div>
+        </div>
+    }
+
+    @if( displayElevation )
+    {
+        MapInfo mapInfo = MapInfoCollection.Instance.PageMapInfo[Model.Page.Id];
+        <div class="w3-padding w3-white w3-display-container">
+            <h2>Elevation Data</h2>
+            @foreach( Line coolLine in mapInfo.CoolLines )
+            {
+                <h3>@coolLine.Name</h3>
+                <ul>
+                    <li><strong>Segment Rating:</strong> @Rating.Cool</li>
+                    <li><strong>Minimum Elevation:</strong> @coolLine.Coordinates.Min( c => c.Elevation.Value ) meters.</li>
+                    <li><strong>Maximum Elevation:</strong> @coolLine.Coordinates.Max( c => c.Elevation.Value ) meters.</li>
+                    <li><strong>Average Elevation:</strong> @coolLine.Coordinates.Average( c => c.Elevation.Value ) meters.</li>
+                </ul>
+                <noscript>JavaScript Required to make a graph.</noscript>
+                <div id="elevMap@coolLine.Id"></div>
+            }
+            @foreach( Line mehLine in mapInfo.MehLines )
+            {
+                <h3>@mehLine.Name</h3>
+                <ul>
+                    <li><strong>Segment Rating:</strong> @Rating.Meh</li>
+                    <li><strong>Minimum Elevation:</strong> @mehLine.Coordinates.Min( c => c.Elevation.Value ) meters.</li>
+                    <li><strong>Maximum Elevation:</strong> @mehLine.Coordinates.Max( c => c.Elevation.Value ) meters.</li>
+                    <li><strong>Average Elevation:</strong> @mehLine.Coordinates.Average( c => c.Elevation.Value ) meters.</li>
+                </ul>
+                <noscript>JavaScript Required to make a graph.</noscript>
+                <div id="elevMap@mehLine.Id"></div>
+            }
+            @foreach( Line lameLine in mapInfo.LameLines )
+            {
+                <h3>@lameLine.Name</h3>
+                <ul>
+                    <li><strong>Segment Rating:</strong> @Rating.Lame</li>
+                    <li><strong>Minimum Elevation:</strong> @lameLine.Coordinates.Min( c => c.Elevation.Value ) meters.</li>
+                    <li><strong>Maximum Elevation:</strong> @lameLine.Coordinates.Max( c => c.Elevation.Value ) meters.</li>
+                    <li><strong>Average Elevation:</strong> @lameLine.Coordinates.Average( c => c.Elevation.Value ) meters.</li>
+                </ul>
+                <noscript>JavaScript Required to make a graph.</noscript>
+                <div id="elevMap@lameLine.Id"></div>
+            }
         </div>
     }
 
@@ -215,6 +265,22 @@ layout: layout
                 var coolLine_@(coolLine.Id)_options = { color: 'green' };
                 var coolLine_@(coolLine.Id) = L.polyline( @coordString, coolLine_@(coolLine.Id)_options );
                 coolLine_@(coolLine.Id).addTo(map);
+
+                var coolLineStartHtml_@(coolLine.Id) = '<div class="left" style="overflow: auto; color: black;">Start: @coolLine.Name</div>';
+                var coolLineStartPopup_@(coolLine.Id) = L.popup({maxwidth:500}).setContent(coolLineStartHtml_@(coolLine.Id));
+                var coolLineStartMarker_@(coolLine.Id) = L.circleMarker(
+                    [@coolLine.Coordinates.First().Latitude, @coolLine.Coordinates.First().Longitude],
+                    { color: 'green' }
+                ).setRadius( 5 );
+                coolLineStartMarker_@(coolLine.Id).addTo(map).bindPopup(coolLineStartPopup_@(coolLine.Id));
+
+                var coolLineEndHtml_@(coolLine.Id) = '<div class="left" style="overflow: auto; color: black;">End: @coolLine.Name</div>';
+                var coolLineEndPopup_@(coolLine.Id) = L.popup({maxwidth:500}).setContent(coolLineEndHtml_@(coolLine.Id));
+                var coolLineEndMarker_@(coolLine.Id) = L.circleMarker(
+                    [@coolLine.Coordinates.Last().Latitude, @coolLine.Coordinates.Last().Longitude],
+                    { color: 'red' }
+                ).setRadius( 5 );
+                coolLineEndMarker_@(coolLine.Id).addTo(map).bindPopup(coolLineEndPopup_@(coolLine.Id));
             </text>
         }
 
@@ -273,4 +339,8 @@ layout: layout
             </text>
         }
     </script>
+}
+
+@if( displayElevation )
+{
 }

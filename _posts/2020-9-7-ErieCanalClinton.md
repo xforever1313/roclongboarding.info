@@ -20,7 +20,7 @@ points_of_interest:
       docid: "lock33_parking"
 
 cool_lines:
-    - name: Trail
+    - name: "Clinton Ave to Lock 33"
       coords: "./_gpxdata/ErieCanalClintonLock33.gpx"
 
 ---
