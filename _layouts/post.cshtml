@@ -72,6 +72,11 @@ layout: layout
                         <li><strong>Minimum Elevation:</strong> @line.Coordinates.Min( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
                         <li><strong>Maximum Elevation:</strong> @line.Coordinates.Max( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
                         <li><strong>Average Elevation:</strong> @line.Coordinates.Average( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
+                        @if( displayMap )
+                        {
+                            <li><a href="#" id="startLineLink_@line.Id">View Start On Map</a></li>
+                            <li><a href="#" id="endLineLink_@line.Id">View End On Map</a></li>
+                        }
                     </ul>
                     <noscript>JavaScript Required to make a graph.</noscript>
                     <div id="elevMap@line.Id"></div>
@@ -269,6 +274,9 @@ layout: layout
                     color = "red";
                 }
 
+                GpsCoordinate startPoint = line.Coordinates.First();
+                GpsCoordinate endPoint = line.Coordinates.Last();
+
                 <text>
                     var line_@(line.Id)_options = { color: '@color' };
                     var line_@(line.Id) = L.polyline( @coordString, line_@(line.Id)_options );
@@ -277,7 +285,7 @@ layout: layout
                     var lineStartHtml_@(line.Id) = '<div class="left" style="overflow: auto; color: black;">Start: @line.Name</div>';
                     var lineStartPopup_@(line.Id) = L.popup({maxwidth:500}).setContent(lineStartHtml_@(line.Id));
                     var lineStartMarker_@(line.Id) = L.circleMarker(
-                        [@line.Coordinates.First().Latitude, @line.Coordinates.First().Longitude],
+                        [@startPoint.Latitude, @startPoint.Longitude],
                         { color: 'green' }
                     ).setRadius( 5 );
                     lineStartMarker_@(line.Id).addTo(map).bindPopup(lineStartPopup_@(line.Id));
@@ -285,11 +293,30 @@ layout: layout
                     var lineEndHtml_@(line.Id) = '<div class="left" style="overflow: auto; color: black;">End: @line.Name</div>';
                     var lineEndPopup_@(line.Id) = L.popup({maxwidth:500}).setContent(lineEndHtml_@(line.Id));
                     var lineEndMarker_@(line.Id) = L.circleMarker(
-                        [@line.Coordinates.Last().Latitude, @line.Coordinates.Last().Longitude],
+                        [@endPoint.Latitude, @endPoint.Longitude],
                         { color: 'red' }
                     ).setRadius( 5 );
                     lineEndMarker_@(line.Id).addTo(map).bindPopup(lineEndPopup_@(line.Id));
                 </text>
+
+                @if( displayElevation )
+                {
+                    <text>
+                        document.getElementById( 'startLineLink_@line.Id' ).onclick = function()
+                        {
+                            lineStartMarker_@(line.Id).openPopup();
+                            map.setView( [@startPoint.Latitude, @startPoint.Longitude] );
+                            return false;
+                        };
+
+                        document.getElementById( 'endLineLink_@line.Id' ).onclick = function()
+                        {
+                            lineEndMarker_@(line.Id).openPopup();
+                            map.setView( [@endPoint.Latitude, @endPoint.Longitude] );
+                            return false;
+                        };
+                    </text>
+                }
             }
         }
 
