@@ -48,41 +48,34 @@ layout: layout
         MapInfo mapInfo = MapInfoCollection.Instance.PageMapInfo[Model.Page.Id];
         <div class="w3-padding w3-white w3-display-container">
             <h2>Elevation Data</h2>
-            @foreach( Line coolLine in mapInfo.CoolLines )
+            @foreach( IEnumerable<Line> lines in new IEnumerable<Line>[]{ mapInfo.CoolLines, mapInfo.MehLines, mapInfo.LameLines } )
             {
-                <h3>@coolLine.Name</h3>
-                <ul>
-                    <li><strong>Segment Rating:</strong> @Rating.Cool</li>
-                    <li><strong>Minimum Elevation:</strong> @coolLine.Coordinates.Min( c => c.Elevation.Value ) meters.</li>
-                    <li><strong>Maximum Elevation:</strong> @coolLine.Coordinates.Max( c => c.Elevation.Value ) meters.</li>
-                    <li><strong>Average Elevation:</strong> @coolLine.Coordinates.Average( c => c.Elevation.Value ) meters.</li>
-                </ul>
-                <noscript>JavaScript Required to make a graph.</noscript>
-                <div id="elevMap@coolLine.Id"></div>
-            }
-            @foreach( Line mehLine in mapInfo.MehLines )
-            {
-                <h3>@mehLine.Name</h3>
-                <ul>
-                    <li><strong>Segment Rating:</strong> @Rating.Meh</li>
-                    <li><strong>Minimum Elevation:</strong> @mehLine.Coordinates.Min( c => c.Elevation.Value ) meters.</li>
-                    <li><strong>Maximum Elevation:</strong> @mehLine.Coordinates.Max( c => c.Elevation.Value ) meters.</li>
-                    <li><strong>Average Elevation:</strong> @mehLine.Coordinates.Average( c => c.Elevation.Value ) meters.</li>
-                </ul>
-                <noscript>JavaScript Required to make a graph.</noscript>
-                <div id="elevMap@mehLine.Id"></div>
-            }
-            @foreach( Line lameLine in mapInfo.LameLines )
-            {
-                <h3>@lameLine.Name</h3>
-                <ul>
-                    <li><strong>Segment Rating:</strong> @Rating.Lame</li>
-                    <li><strong>Minimum Elevation:</strong> @lameLine.Coordinates.Min( c => c.Elevation.Value ) meters.</li>
-                    <li><strong>Maximum Elevation:</strong> @lameLine.Coordinates.Max( c => c.Elevation.Value ) meters.</li>
-                    <li><strong>Average Elevation:</strong> @lameLine.Coordinates.Average( c => c.Elevation.Value ) meters.</li>
-                </ul>
-                <noscript>JavaScript Required to make a graph.</noscript>
-                <div id="elevMap@lameLine.Id"></div>
+                @foreach( Line line in lines )
+                {
+                    string rating;
+                    if( object.ReferenceEquals( lines, mapInfo.CoolLines ) )
+                    {
+                        rating = Rating.Cool.ToString();
+                    }
+                    else if( object.ReferenceEquals( lines, mapInfo.MehLines ) )
+                    {
+                        rating = Rating.Meh.ToString();
+                    }
+                    else
+                    {
+                        rating = Rating.Lame.ToString();
+                    }
+
+                    <h3>@line.Name</h3>
+                    <ul>
+                        <li><strong>Segment Rating:</strong> @rating</li>
+                        <li><strong>Minimum Elevation:</strong> @line.Coordinates.Min( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
+                        <li><strong>Maximum Elevation:</strong> @line.Coordinates.Max( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
+                        <li><strong>Average Elevation:</strong> @line.Coordinates.Average( c => c.Elevation.Value ).ToString( "F" ) meters.</li>
+                    </ul>
+                    <noscript>JavaScript Required to make a graph.</noscript>
+                    <div id="elevMap@line.Id"></div>
+                }
             }
         </div>
     }
