@@ -48,37 +48,74 @@
     <!-- Nav Bar -->
     @{
         const string navAClass = "w3-bar-item w3-button w3-padding-16";
+        const string navADropDownClass = "w3-bar-item w3-button";
     }
     <div class="w3-container w3-theme" id="theTop">
         <nav class="w3-bar">
             <a href="/index.html" class="@navAClass"><i class="fa fa-home"></i> Home</a>
             @{
-                List<string> ignorePages = new List<string>() { "/", "/atom.xml", "/rss.xml", "/posts", "/sitemap.xml", "/privacy" };
+                List<string> ignorePages = new List<string>() { "/", "/atom.xml", "/rss.xml", "/posts", "/sitemap.xml" };
+                List<Page> aboutPages = new List<Page>();
+                List<Page> otherPages = new List<Page>();
                 foreach( Page thePage in Model.Site.Pages )
                 {
-                    if(
+                    if( thePage.Bag.ContainsKey( "layout" ) && "aboutpage".Equals( thePage.Bag["layout"] ) )
+                    {
+                        aboutPages.Add( thePage );
+                    }
+                    else if(
                         ( ignorePages.Contains( @thePage.Id ) == false ) &&
                         ( string.IsNullOrEmpty( @thePage.Id ) == false ) &&
                         ( @thePage.Id.Contains( ".well-known" ) == false ) // Don't include lets encrypt stuff.
                     )
                     {
+                        otherPages.Add( thePage );
+                    }
+                }
+
+                int Compare( Page left, Page right )
+                {
+                    const string key = "pageindex";
+                    if( left.Bag.ContainsKey( key ) == false )
+                    {
+                        throw new KeyNotFoundException(
+                            left.Id + " needs " + key
+                        );
+                    }
+                    else if ( right.Bag.ContainsKey(key) == false )
+                    {
+                        throw new KeyNotFoundException(
+                            right.Id + " needs " + key
+                        );
+                    }
+                    return left.Bag[key].ToString().CompareTo( right.Bag[key].ToString() );
+                }
+                aboutPages.Sort( Compare );
+            }
+            <div class="w3-dropdown-hover">
+                <button class="w3-button w3-padding-16">
+                    About <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="w3-dropdown-content w3-card-4 w3-bar-block">
+                    @foreach( Page thePage in aboutPages )
+                    {
                         if( thePage.Bag.ContainsKey( "icon" ) )
                         {
-                            @:<a href="@thePage.Url" class="@navAClass"><i class="fa @thePage.Bag["icon"]"></i> @thePage.Title</a>
+                            @:<a href="@thePage.Url" class="@navADropDownClass"><i class="fa @thePage.Bag["icon"]"></i> @thePage.Title</a>
                         }
                         else
                         {
-                            @:<a href="@thePage.Url" class="@navAClass"><i class="fa fa-circle-o"></i> @thePage.Title</a>
+                            @:<a href="@thePage.Url" class="@navADropDownClass"><i class="fa fa-circle-o"></i> @thePage.Title</a>
                         }
                     }
-                }
-            }
+                </div>
+            </div>
             <div class="w3-dropdown-hover">
                 <button class="w3-button w3-padding-16">
                     Posts <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="w3-dropdown-content w3-card-4 w3-bar-block">
-                    <a href="/posts.html" class="w3-bar-item w3-button"><i class="fa fa-circle-o"></i> All</a>
+                    <a href="/posts.html" class="@navADropDownClass"><i class="fa fa-circle-o"></i> All</a>
                     @foreach( var category in Model.Site.Categories )
                     {
                         foreach( var page in Model.Site.Pages )
@@ -87,13 +124,24 @@
                             {
                                 if( category.Name.Equals( page.Bag["category"] ) )
                                 {
-                                    @:<a href="@(page.Url)" class="w3-bar-item w3-button"><i class="fa fa-circle-o"></i> @(category.Name)</a>
+                                    @:<a href="@(page.Url)" class="@navADropDownClass"><i class="fa fa-circle-o"></i> @(category.Name)</a>
                                 }
                             }
                         }
                     }
                 </div>
             </div>
+            @foreach( Page thePage in otherPages )
+            {
+               if( thePage.Bag.ContainsKey( "icon" ) )
+                {
+                    @:<a href="@thePage.Url" class="@navAClass"><i class="fa @thePage.Bag["icon"]"></i> @thePage.Title</a>
+                }
+                else
+                {
+                    @:<a href="@thePage.Url" class="@navAClass"><i class="fa fa-circle-o"></i> @thePage.Title</a>
+                }
+            }
             <a href="/atom.xml" class="@navAClass"><i class="fa fa-rss"></i> ATOM Feed</a>
         </nav>
     </div>

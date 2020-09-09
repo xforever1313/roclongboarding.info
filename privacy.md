@@ -1,9 +1,10 @@
 ---
-layout: page
+layout: aboutpage
 title: Privacy Policy
 description: "Privacy Policy"
 comments: false
 icon: "fas fa-lock"
+pageindex: 5
 ---
 
 # Who we are
