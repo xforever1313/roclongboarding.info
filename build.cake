@@ -43,6 +43,11 @@ Task( "build_plugin" )
     }
 ).Description( "Builds the map plugin" );
 
+Task( "build_all" )
+.IsDependentOn( "build_pretzel" )
+.IsDependentOn( "build_plugin")
+.IsDependentOn( "taste" );
+
 void BuildPretzel()
 {
     Information( "Building Pretzel..." );
