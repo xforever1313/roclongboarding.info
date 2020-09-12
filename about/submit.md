@@ -23,7 +23,7 @@ The easiest thing to do is drop us a tip on where to go longboarding.  You just 
 
 You can also submit an issue to our [GitHub](@Model.Site.Config["githubissues"]) with a suggestion if you have an account there.
 
-If you want your name or username to be included in the location post under a "Suggested By" section, indicate so in the submission.  If you have a website, social media, whatever you want to associate with yourself, include that as well, and we'll link it to your name under the "Suggest By" section.  If you do not explicitly indicate that your name under the "Suggested By" section, we'll assume that you do not want to.
+If you want your name or username to be included in the location post under a "Suggested By" section, indicate so in the submission.  If you have a website, social media, whatever you want to associate with yourself, include that as well, and we'll link it to your name under the "Suggest By" section.  If you do not explicitly indicate that you want to use your name under the "Suggested By" section, we'll assume that you do not want to.
 
 ### Submit a Guest Post
 
@@ -33,8 +33,8 @@ Please keep in mind the following when submitting a guest post:
 * If you write a guest post, all posts are [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/).  If you are not comfortable releasing your posts under this license, do not submit a guest post.
 * You can request a deletion of a guest post you wrote by sending an email WITH THE SAME EMAIL to ```@Model.Site.Config["contact"]``` and asking us to remove it.  Or, put in a GitHub issue with the same account used to make a pull request or submit an issue to.  However, keep in mind that this site is powered by a public [Git](https://en.wikipedia.org/wiki/Git) repository, and by the nature of Git, once something is committed into it, it can never go away.  The post is there forever in the Git history, and anyone could have cloned it at any time.  If you are not comfortable with this, please do not submit a guest post.
 * Any photos you must own the copyright to, and also must be [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/).
-* YouTube videos, are allowed embedded and they can be the standard YouTube license.
-* [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) data if you want to include the area on a map.
+* YouTube videos are allowed, and since they are embedded, they can be the standard YouTube license.
+* [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) data is recommended if you want to include the area on a map.  GPX data is stripped of everything other than latitude, longitude, and elevation information before being added to the website.  You can download GPX data from pretty much any service that tracks your GPS data such as [Strava](https://www.strava.com/).  Please include GPX data in your submission, and indicate with "segment" it goes with.
 
 Posts can include things such as:
 * Hazards (things to avoid)
