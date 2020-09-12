@@ -8,8 +8,10 @@ tag_pages_layout: tag
 author: Seth Hendrick
 title: Rochester Longboarding Info
 url: https://www.roclongboarding.info
-contact: contact@roclongboardin.info
+urlnohttp: www.roclongboarding.info
+contact: contact@roclongboarding.info
 github: https://github.com/xforever1313/roclongboarding.info
+githubissues: https://github.com/xforever1313/roclongboarding.info/issues
 
 disqus_shortname: roclongboarding-info
 
@@ -20,3 +22,4 @@ exclude:
  - .vscode
  - build.cake
  - tools
+ - Readme.md
