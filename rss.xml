@@ -1,6 +1,7 @@
 ---
 layout: nil
 ---
+@model Pretzel.Logic.Templating.Context.PageContext
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
@@ -16,7 +17,7 @@ layout: nil
     {
     <item>
         <title>@post.Title</title>
-        <link>@Model.Site.Config["url"]@(post.Url)</link>
+        @Raw("<link>")@Model.Site.Config["url"]@(post.Url)@Raw("</link>")@* Workaround: RazorEngine is a HTML5 template engine, where link is a void element *@
         <pubDate>@post.Date.ToString("ddd, dd MMM yyyy H:mm:ss K")</pubDate>
         <author>@Model.Site.Config["contact"] (@Model.Site.Config["author"])</author>
         <guid isPermaLink="true">@Model.Site.Config["url"]@(post.Url)</guid>

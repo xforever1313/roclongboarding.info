@@ -2,6 +2,7 @@
 layout: layout
 ---
 
+@using System.Linq;
 @using System.Text;
 @using MapPlugin;
 
@@ -32,7 +33,7 @@ layout: layout
         <p>Posted on @Model.Page.Date.ToString( "D" )</p>
     </header>
     <div class="w3-padding w3-white w3-display-container">
-        @Model.Content
+        @Raw( Model.Content )
     </div>
 
     @if( displayMap )
