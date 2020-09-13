@@ -7,7 +7,7 @@ icon: "fa-warning"
 pageindex: 6
 ---
 
-# Skate at your own risk.
+## Skate at your own risk
 
 The locations listed here are for informational purposes only.  While one person may find these locations easy to longboard, it does not mean that it is easy for everyone.  Please use good judgement and common-sense to ensure that the location is within your skill level.
 
@@ -19,6 +19,6 @@ As always with physical activity, it is best to consult with your doctor to make
 
 @Model.Site.Config["url"] is not responsible for any injuries, accidents, or any other mishaps that may happen by skating at a location listed on this site.
 
-# Opinions
+## Opinions
 
 Any opinion specified on this website are solely those of the author, and not necessarily the opinions of other authors on the site, or the employers of that author.

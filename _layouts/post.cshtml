@@ -85,7 +85,7 @@ layout: layout
                     }
                     @if( string.IsNullOrWhiteSpace( line.GpxFile ) == false )
                     {
-                        <li><a href="@line.GpxFile.TrimStart( '.' )" target="_blank">View Gpx Data</a></li>
+                        <li><a href="@line.GpxFile.TrimStart( '.' )" target="_blank">Download Gpx Data</a></li>
                     }
                 </ul>
                 @if( displayElevation )
@@ -101,7 +101,7 @@ layout: layout
 
     @if( Model.Comments )
     {
-        <div class="w3-container">
+        <div class="w3-container w3-padding w3-white w3-display-container">
             <h2>Comments</h2>
             <noscript>JavaScript is needed to load Comments.</noscript>
             <div id="disqus_thread"></div>
