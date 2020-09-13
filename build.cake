@@ -1,6 +1,6 @@
 string target = Argument( "target", "taste" );
 
-const string gpsDataFolder = "./_gpxdata";
+const string gpsDataFolder = "./gpxdata";
 
 #load "_cakefiles/GpxModifier.cake"
 
@@ -60,7 +60,7 @@ void BuildPretzel()
     DotNetCoreBuild( "./_pretzel/src/Pretzel.sln", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection categoryFiles = GetFiles( "./_pretzel/src/Pretzel.Categories/bin/Debug/netstandard2.0/Pretzel.Categories.*" );
+    FilePathCollection categoryFiles = GetFiles( "./_pretzel/src/Pretzel.Categories/bin/Debug/netstandard2.1/Pretzel.Categories.*" );
     CopyFiles( categoryFiles, Directory( pluginDir ) );
 
     Information( "Building Pretzel... Done!" );
@@ -83,10 +83,10 @@ void BuildPlugin()
     DotNetCorePublish( "./_MapPlugin/MapPlugin.sln", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.0/publish/MapPlugin.*" );
+    FilePathCollection files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.1/publish/MapPlugin.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
-    files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.0/publish/Geodesy.*" );
+    files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.1/publish/Geodesy.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
     Information( "Building Plugin... Done!" );

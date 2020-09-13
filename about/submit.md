@@ -97,7 +97,7 @@ hazards:
     
 cool_lines:
     - name: default
-      coords: "./_gpxdata/default.gpx"
+      coords: "./gpxdata/default.gpx"
 
 meh_lines:
     - name: bumpy_road
@@ -107,7 +107,7 @@ lame_lines:
     - name: dirt_road_with_elevation
       coords: [[7, 8, 0], [9, 10, 1]]
     - name: rocky road
-      coords: "./_gpxdata/rocky.gpx"
+      coords: "./gpxdata/rocky.gpx"
 
 cool_polys:
   - name: parking lot 1

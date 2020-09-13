@@ -25,6 +25,7 @@ namespace MapPlugin
         {
             this.coordinates = new List<GpsCoordinate>();
             this.Coordinates = this.coordinates.AsReadOnly();
+            this.GpxFile = null;
 
             this.Id = NextId++;
         }
@@ -39,6 +40,8 @@ namespace MapPlugin
         public string Name { get; private set; }
 
         public IReadOnlyList<GpsCoordinate> Coordinates { get; private set; }
+
+        public string GpxFile { get; private set; }
 
         public int Id { get; private set; }
 
@@ -84,6 +87,7 @@ namespace MapPlugin
                 if( dict[coordKey] is string gpxFile )
                 {
                     DeserializeGpxData( context, gpxFile );
+                    this.GpxFile = gpxFile;
                 }
                 else
                 {

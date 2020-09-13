@@ -83,6 +83,10 @@ layout: layout
                         <li><a href="#" id="startLineLink_@line.Id">View Start On Map</a></li>
                         <li><a href="#" id="endLineLink_@line.Id">View End On Map</a></li>
                     }
+                    @if( string.IsNullOrWhiteSpace( line.GpxFile ) == false )
+                    {
+                        <li><a href="@line.GpxFile.TrimStart( '.' )" target="_blank">View Gpx Data</a></li>
+                    }
                 </ul>
                 @if( displayElevation )
                 {

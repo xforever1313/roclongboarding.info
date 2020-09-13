@@ -21,11 +21,11 @@ points_of_interest:
 
 cool_lines:
     - name: "Clinton Ave to Lock 33"
-      coords: "./_gpxdata/ErieCanalClintonLock33.gpx"
+      coords: "./gpxdata/erie_canal_clinton_lock_33.gpx"
 
 ---
 
-This is all about the Erie Canal Trail between Clinto Ave and Lock 33!!!
+This is all about the Erie Canal Trail between Clinton Ave and Lock 33!!!
 
 WOOOOOOO!
 
