@@ -22,7 +22,8 @@ Task( "generate" )
 .Does(
     () =>
     {
-        DeleteDirectory( "_site", true );
+        EnsureDirectoryExists( "_site" );
+        CleanDirectory( "_site" );
         RunPretzel( "bake" );
     }
 ).Description( "Builds the site for publishing." );
