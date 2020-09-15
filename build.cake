@@ -13,7 +13,7 @@ Task( "taste" )
 .Does(
     () =>
     {
-        RunPretzel( "taste" );
+        RunPretzel( "taste", false );
     }
 ).Description( "Calls pretzel taste to try the site locally" );
 
@@ -24,7 +24,7 @@ Task( "generate" )
     {
         EnsureDirectoryExists( "_site" );
         CleanDirectory( "_site" );
-        RunPretzel( "bake" );
+        RunPretzel( "bake", true );
     }
 ).Description( "Builds the site for publishing." );
 
@@ -93,21 +93,45 @@ void BuildPlugin()
     Information( "Building Plugin... Done!" );
 }
 
-void RunPretzel( string argument )
+void RunPretzel( string argument, bool abortOnFail )
 {
     CheckPretzelDependency();
     CheckMapPluginDependency();
 
+    bool fail = false;
+    string onStdOut( string line )
+    {
+        if( string.IsNullOrWhiteSpace( line ) )
+        {
+            return line;
+        }
+        else if( line.StartsWith( "Failed to render template" ) )
+        {
+            fail = true;
+        }
+
+        Console.WriteLine( line );
+
+        return line;
+    }
+
     ProcessSettings settings = new ProcessSettings
     {
         Arguments = ProcessArgumentBuilder.FromString( $"\"{pretzelExe}\" {argument} --debug" ),
-        Silent = false
+        Silent = false,
+        RedirectStandardOutput = abortOnFail,
+        RedirectedStandardOutputHandler = onStdOut
     };
 
     int exitCode = StartProcess( "dotnet", settings );
     if( exitCode != 0 )
     {
         throw new Exception( $"Pretzel exited with exit code: {exitCode}" );
+    }
+
+    if( abortOnFail && fail )
+    {
+        throw new Exception( "Failed to render template" );   
     }
 }
 
