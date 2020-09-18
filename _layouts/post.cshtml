@@ -38,7 +38,7 @@ layout: layout
 
     @if( displayMap )
     {
-        <div class="w3-padding w3-white w3-display-container">
+        <div class="w3-padding w3-white w3-display-container" id="map">
             <h2>Map</h2>
             <noscript>JavaScript Required to make a map.</noscript>
             <div id="mapid" style="width=100%;height:500px;"></div>
@@ -234,18 +234,18 @@ layout: layout
                     document.getElementById( '@poi.DocId' ).onclick = function (){
                         poiMarker_@(poi.Id).openPopup();
                         map.setView( [@poi.Coordinate.Latitude, @poi.Coordinate.Longitude] );
-                        return false;
+                        return true;
                     };
                 </text>
             }
         }
 
         // Create Hazard Icon
-        var poiIcon = L.icon({
-            iconUrl: "/static/img/leaflet/marker-icon.png",
-            iconSize: [25, 41],
-            iconAnchor:[12.5, 41],
-            popupAnchor:[0, -30]
+        var hazardIcon = L.icon({
+            iconUrl: "/static/img/leaflet/hazard-icon.svg",
+            iconSize: [30, 30],
+            iconAnchor:[14, 14],
+            popupAnchor:[0, -5]
         });
 
         // Add the Hazards
@@ -262,7 +262,7 @@ layout: layout
                     document.getElementById( '@hazard.DocId' ).onclick = function (){
                         hazardMarker_@(hazard.Id).openPopup();
                         map.setView( [@hazard.Coordinate.Latitude, @hazard.Coordinate.Longitude] );
-                        return false;
+                        return true;
                     };
                 </text>
             }
