@@ -5,7 +5,7 @@ author: "Seth Hendrick"
 comments: true
 category: "Cool Places"
 description: "The stretch of the Erie Canal Trail between Lock 33, through Lock 32, and ends at Section 7"
-tags: [Erie Canal Trail, Canal, Lock 33, Lock 32, Section 7, Brighton, Pittsford]
+tags: [Erie Canal Trail, Canal, Lock 33, Lock 32, Section 7, Pittsford, Henrietta]
 
 display_map: true
 display_elevation: true
