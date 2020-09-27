@@ -128,16 +128,6 @@ layout: layout
     }
 
     <footer class="w3-container w3-blue-grey">
-        <div>
-            @if( Model.Previous != null )
-            {
-                <a href="@Model.Previous.Url" title="Previous Post: @Model.Previous.Title">&larr; @Model.Previous.Title</a>
-            }
-            @if( Model.Next != null )
-            {
-                <a href="@Model.Next.Url" title="next Post: @Model.Next.Title">@Model.Next.Title &rarr; </a>
-            }
-        </div>
         <p>
             <strong>Posted In:</strong>
             @{
@@ -172,6 +162,16 @@ layout: layout
                 }
             }
         </p>
+        <div>
+            @if( Model.Previous != null )
+            {
+                <p>&larr; <strong>Previous Post: </strong><a href="@Model.Previous.Url" title="Previous Post: @Model.Previous.Title">@Model.Previous.Title</a></p>
+            }
+            @if( Model.Next != null )
+            {
+                <p><strong>Next Post: </strong><a href="@Model.Next.Url" title="next Post: @Model.Next.Title">@Model.Next.Title</a> &rarr;</p>
+            }
+        </div>
     </footer>
 </article>
 
