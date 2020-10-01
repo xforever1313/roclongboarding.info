@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
+using CommonMark;
 using Pretzel.Logic.Extensibility;
 using Pretzel.Logic.Templating.Context;
 
@@ -27,6 +28,13 @@ namespace MapPlugin
         {
             this.mapInfo = new Dictionary<string, MapInfo>();
             this.PageMapInfo = new ReadOnlyDictionary<string, MapInfo>( this.mapInfo );
+        }
+
+        static MapInfoCollection()
+        {
+            CommonMarkSettings.Default.OutputDelegate =
+                (doc, output, settings) =>
+                new CustomHtmlFormatter(output, settings).WriteDocument(doc);
         }
 
         // ---------------- Properties ----------------
