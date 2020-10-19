@@ -57,7 +57,7 @@ At the end of the segment is a gate that says "Section 7" on a sign.  This is us
 
 ## Getting to it
 
-Parking is located inside of <a href="#map" id="lock33_parking">Lock 33 Park</a> on Edgewood Avenue and inside of <a href="#map" id="lock32_state_park">Lock 32 Start Park</a> on Clover Street.
+Parking is located inside of [Lock 33 Park](#map_lock33_parking) on Edgewood Avenue and inside of [Lock 32 State Park](#map_lock32_state_park) on Clover Street.
 
 ## Hazards
 
@@ -65,13 +65,13 @@ As usual with the Erie Canal Trail, a lot of people use it.  You'll see bikers, 
 
 ### Clover Street Underpass
 
-<a href="#map" id="clover_street_underpass">View On Map</a>
+[View On Map](#map_clover_street_underpass)
 
 On the east side of the Lock 32 State Park, the trail goes under Clover Street.  There is a very steep hill that twists and turns under a bridge to the lock and then again under the Clover Street bridge.  Because of the bridges, these corners are blind.  Worse, if you fall off or need to bail, there is a non-zero chance that your board will fall into a ditch (....that may or may not have almost happened to me).  If you are a beginner, get off and walk down the hill.  The last thing you want to do is rear-end someone walking that you didn't see.
 
 ### Lock 32 Gate
 
-<a href="#map" id="lock_32_gate">View On Map</a>
+[View On Map](#map_lock_32_gate)
 
 On the west side of the Lock 32 State Park, there is a gate the blocks off half of the trail to prevent cars from going through.  Slow down when approaching the gate and make sure it is clear before passing through it.  It can get congested at times if there are a lot of people on the trail.
 
