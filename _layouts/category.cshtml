@@ -19,7 +19,7 @@ layout : layout
                     {
                         foreach( var post in cat.Posts )
                         {
-                            @:<li><a href="@post.Url">@post.Title</a></li>
+                            @:<li><a href="@post.Url">@post.Title</a> - @post.Bag["description"]</li>
                         }
                     }
                 }
