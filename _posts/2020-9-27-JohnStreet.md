@@ -71,11 +71,11 @@ After crossing Wiltsie Drive, there isn't really much to see.  On your left you'
 
 Once you pass Highpower Road on your left, which is where MKS Instruments is, there is a hill you need to go up.  This hill is pretty big and steep.  According to GPX data, the hill is about a 30 feet tall (about 9 meters for our non-US friends).  Going up this hill is exhausting, but how about going down?  I'm not going to lie, it wasn't that great, and I was actually worried about going down at full speed.  For me, it wasn't the hill size that was the issue, but it was the shape the trail was in.  There were several cracks in the trail that genuinely worried me that my wheel would get caught in it and I would go flying at a fast speed.  Going down the hill, I actually bailed 3 times into the grass as I got close to these big cracks (I was also still new, and didn't want get in over my head).  Maybe someday the trail would be in better shape and going down this hill will be fun, but the quality of the trail in this area makes it rather sketchy to go down.
 
-Towards the top of the hill you'll reach the <a href="#map" id="rit_observatory">RIT Observatory</a> on your right, and from there it is the home stretch until you reach Bailey road.  This is where I turn around, but there are sidewalks south of Bailey road and east along Bailey road as well if you wanted to keep going.
+Towards the top of the hill you'll reach the [RIT Observatory](#map_rit_observatory) on your right, and from there it is the home stretch until you reach Bailey road.  This is where I turn around, but there are sidewalks south of Bailey road and east along Bailey road as well if you wanted to keep going.
 
 ## Getting to it
 
-One could park inside of <a href="#map" id="park_point">Park Point</a> and walk over to the trail.  If you are allowed to park at RIT, you can also park in <a href="#map" id="a_lot">A Lot</a>, <a href="#map" id="b_lot">B Lot</a>, <a href="#map" id="c_lot">C Lot</a>, or <a href="#map" id="k_lot">K Lot</a> and make a short skate down Perkins Road or Wiltsie Drive to get to the trail.
+One could park inside of [Park Point](#map_park_point) and walk over to the trail.  If you are allowed to park at RIT, you can also park in [A Lot](#map_a_lot), [B Lot](#map_b_lot), [C Lot](#map_c_lot), or [K Lot](#map_k_lot) and make a short skate down Perkins Road or Wiltsie Drive to get to the trail.
 
 ## Hazards
 
@@ -83,11 +83,11 @@ One could park inside of <a href="#map" id="park_point">Park Point</a> and walk 
 
 The main hazard is there are a few intersections that you need to cross.  Be on the lookout for cars as you cross the intersections.  Remember, this is near a college campus, so there are inexperienced drivers.  Keep on the look out as you cross the street at these intersections.
 
-<a href="#map" id="trail_crossing_road">Trail Crossing Road</a> is one intersection, and it does not have a crossing light.  It is also at the bottom of a hill if you are traveling north, so make sure you know how to brake so you don't hit a car pulling out of Park Point.
+[Trail Crossing Road](#map_trail_crossing_road) is one intersection, and it does not have a crossing light.  It is also at the bottom of a hill if you are traveling north, so make sure you know how to brake so you don't hit a car pulling out of Park Point.
 
-The second intersection is <a href="#map" id="perkins_road">Perkins Road</a>.  This intersection does have a crossing light.  If traveling south, the other side of Perkins Road has some pretty nasty pot holes, so be mindful of that after crossing.
+The second intersection is [Perkins Road](#map_perkins_road).  This intersection does have a crossing light.  If traveling south, the other side of Perkins Road has some pretty nasty pot holes, so be mindful of that after crossing.
 
-The third intersection is <a href="#map" id="wiltsie_drive">Wiltsie Drive</a>.  Like Perkins Road, this intersection does have a crossing light.
+The third intersection is [Wiltsie Drive](#map_wiltsie_drive).  Like Perkins Road, this intersection does have a crossing light.
 
 ### Rough Road
 
