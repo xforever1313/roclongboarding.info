@@ -55,7 +55,7 @@ The segment of the trail between Clinton Ave and Winton Road is illuminated by s
 
 ## Getting to it
 
-Parking is located on <a href="#" id="clinton_parking">Clinton Ave</a> or at <a href="#" id="lock33_parking">Lock 33 Park</a> on Edgewood Avenue.  There are also entry-points to the segment from [Meridian Centre Park](https://www.townofbrighton.org/264/Meridian-Centre-Park) <a href="#" id="meridian_1">here</a> and <a href="#" id="meridian_2">here</a>, <a href="#" id="winton_road">Winton Road</a>, and <a href="#" id="french_road">French road</a>.
+Parking is located on [Clinton Ave](#map_clinton_parking) or at [Lock 33 Park](#map_lock33_parking) on Edgewood Avenue.  There are also entry-points to the segment from [Meridian Centre Park](https://www.townofbrighton.org/264/Meridian-Centre-Park) [here](#map_meridian_1) and [here](#map_meridian_2), [Winton Road](#map_winton_road)</a>, and [French Road](#map_french_road).
 
 ## Hazards
 
