@@ -1,0 +1,14 @@
+---
+layout: nil
+---
+
+/* Team */
+
+    Seth Hendrick
+    Twitter: https://twitter.com/xforever1313
+    Website: https://shendrick.net
+
+/* Site */
+
+    Last Updated: @DateTime.Now.ToString( "s" )
+    Software: https://roclongboarding.info/about/credits.html
