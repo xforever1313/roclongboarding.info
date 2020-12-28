@@ -18,6 +18,7 @@ disqus_shortname: roclongboarding-info
 exclude:
  - .gitignore
  - .git
+ - .gitmodules
  - .vs
  - .vscode
  - build.cake
