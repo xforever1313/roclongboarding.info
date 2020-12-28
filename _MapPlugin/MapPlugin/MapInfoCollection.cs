@@ -34,7 +34,7 @@ namespace MapPlugin
         {
             CommonMarkSettings.Default.OutputDelegate =
                 (doc, output, settings) =>
-                new CustomHtmlFormatter(output, settings).WriteDocument(doc);
+                new MapInfoHtmlFormatter(output, settings).WriteDocument(doc);
         }
 
         // ---------------- Properties ----------------

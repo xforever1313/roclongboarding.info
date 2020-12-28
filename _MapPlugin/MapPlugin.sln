@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapPlugin", "MapPlugin\MapP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pretzel.Logic", "..\_pretzel\src\Pretzel.Logic\Pretzel.Logic.csproj", "{18B26474-68F2-4E89-8C2F-A0ED6BFCA210}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pretzel.SethExtensions", "..\_pretzel\src\Pretzel.SethExtensions\Pretzel.SethExtensions.csproj", "{00CC115A-C9C9-4722-B711-8DF4F75F9135}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{18B26474-68F2-4E89-8C2F-A0ED6BFCA210}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18B26474-68F2-4E89-8C2F-A0ED6BFCA210}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18B26474-68F2-4E89-8C2F-A0ED6BFCA210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CC115A-C9C9-4722-B711-8DF4F75F9135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CC115A-C9C9-4722-B711-8DF4F75F9135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CC115A-C9C9-4722-B711-8DF4F75F9135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CC115A-C9C9-4722-B711-8DF4F75F9135}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

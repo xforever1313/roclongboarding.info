@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\_pretzel\src\Pretzel.Logic\Pretzel.Logic.csproj" />
+    <ProjectReference Include="..\..\_pretzel\src\Pretzel.SethExtensions\Pretzel.SethExtensions.csproj" />
   </ItemGroup>
 
 </Project>

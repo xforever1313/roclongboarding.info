@@ -7,6 +7,7 @@ const string gpsDataFolder = "./gpxdata";
 const string pretzelExe = "./_pretzel/src/Pretzel/bin/Debug/netcoreapp3.1/Pretzel.dll";
 const string pluginDir = "./_plugins";
 const string categoryPlugin = "./_plugins/Pretzel.Categories.dll";
+const string extensionPlugin = "./_plugins/Pretzel.SethExtensions.dll";
 const string mapPlugin = "./_plugins/MapPlugin.dll";
 
 Task( "taste" )
@@ -61,8 +62,18 @@ void BuildPretzel()
     DotNetCoreBuild( "./_pretzel/src/Pretzel.sln", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection categoryFiles = GetFiles( "./_pretzel/src/Pretzel.Categories/bin/Debug/netstandard2.1/Pretzel.Categories.*" );
-    CopyFiles( categoryFiles, Directory( pluginDir ) );
+
+    // Move Pretzel.Categories.
+    {
+        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.Categories/bin/Debug/netstandard2.1/Pretzel.Categories.*" );
+        CopyFiles( files, Directory( pluginDir ) );
+    }
+
+    // Move Pretzel.SethExtensions
+    {
+        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.SethExtensions/bin/Debug/netstandard2.1/Pretzel.SethExtensions.*" );
+        CopyFiles( files, Directory( pluginDir ) );
+    }
 
     Information( "Building Pretzel... Done!" );
 }
@@ -137,7 +148,11 @@ void RunPretzel( string argument, bool abortOnFail )
 
 void CheckPretzelDependency()
 {
-    if( ( FileExists( pretzelExe ) == false ) || ( FileExists( categoryPlugin ) == false ) )
+    if(
+        ( FileExists( pretzelExe ) == false ) ||
+        ( FileExists( categoryPlugin ) == false ) ||
+        ( FileExists( extensionPlugin ) == false )
+    )
     {
         BuildPretzel();
     }
