@@ -74,7 +74,7 @@
         <nav class="w3-bar">
             <a href="/index.html" class="@navAClass"><i class="fa fa-home"></i> Home</a>
             @{
-                List<string> ignorePages = new List<string>() { "/", "/atom.xml", "/rss.xml", "/posts", "/sitemap.xml", "/humans.txt", "/robots.txt" };
+                List<string> ignorePages = new List<string>() { "/", "/posts" };
                 List<Page> aboutPages = new List<Page>();
                 List<Page> otherPages = new List<Page>();
                 foreach( Page thePage in Model.Site.Pages )
@@ -86,7 +86,8 @@
                     else if(
                         ( ignorePages.Contains( @thePage.Id ) == false ) &&
                         ( string.IsNullOrEmpty( @thePage.Id ) == false ) &&
-                        ( @thePage.Id.Contains( ".well-known" ) == false ) // Don't include lets encrypt stuff.
+                        ( @thePage.Id.Contains( ".well-known" ) == false ) && // Don't include lets encrypt stuff.
+                        ( "nil".Equals( thePage.Bag["layout"] ) == false )
                     )
                     {
                         otherPages.Add( thePage );
