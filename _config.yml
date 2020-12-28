@@ -19,6 +19,7 @@ exclude:
  - .gitignore
  - .git
  - .gitmodules
+ - .tgitconfig
  - .vs
  - .vscode
  - build.cake
