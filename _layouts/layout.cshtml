@@ -74,7 +74,7 @@
         <nav class="w3-bar">
             <a href="/index.html" class="@navAClass"><i class="fa fa-home"></i> Home</a>
             @{
-                List<string> ignorePages = new List<string>() { "/", "/atom.xml", "/rss.xml", "/posts", "/sitemap.xml" };
+                List<string> ignorePages = new List<string>() { "/", "/atom.xml", "/rss.xml", "/posts", "/sitemap.xml", "/humans.txt", "/robots.txt" };
                 List<Page> aboutPages = new List<Page>();
                 List<Page> otherPages = new List<Page>();
                 foreach( Page thePage in Model.Site.Pages )
