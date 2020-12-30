@@ -2,11 +2,8 @@
 layout: nil
 ---
 
-/* Team */
-
-    Seth Hendrick
-    Twitter: https://twitter.com/xforever1313
-    Website: https://shendrick.net
+@using Pretzel.Logic.Templating.Context
+@Include( "humans_team.cstxt", Model, typeof( PageContext ) )
 
 /* Site */
 

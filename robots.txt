@@ -1,8 +1,5 @@
 ---
 layout: nil
 ---
-
-User-agent: *
-Disallow:
-
-Sitemap: @Model.Site.Config["url"]/sitemap.xml
+@using Pretzel.Logic.Templating.Context
+@Include( "robots.cstxt", Model, typeof( PageContext ) )

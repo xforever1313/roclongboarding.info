@@ -1,32 +1,5 @@
 ---
 layout: nil
 ---
-@model Pretzel.Logic.Templating.Context.PageContext
-
-<?xml version="1.0"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <title>@Model.Site.Title | @Model.Site.Config["author"]</title>
-  <link href="@Model.Site.Config["url"]"/>
-  <link type="application/atom+xml" rel="self" href="@Model.Site.Config["url"]/atom.xml"/>
-  <updated>@Model.Site.Time.ToString("s")</updated>
-  <id>@Model.Site.Config["url"]/</id>
-  <author>
-    <name>@Model.Site.Config["author"]</name>
-    <email>@Model.Site.Config["contact"]</email>
-  </author>
-
-  @foreach (var post in Model.Site.Posts)
-  {
-      <entry>
-          <id>@Model.Site.Config["url"]@post.Url</id>
-          <link type="text/html" rel="alternate" href="@Model.Site.Config["url"]@post.Url"/>
-          <title>@post.Title</title>
-          <updated>@post.Date.ToString("s")</updated>
-          <author>
-              <name>@Model.Site.Config["author"]</name>
-              <uri>@Model.Site.Config["url"]</uri>
-          </author>
-          <content type="html">@post.Content</content>
-      </entry>
-  }
-</feed>
+@using Pretzel.Logic.Templating.Context
+@Include( "atom.csxml", Model, typeof( PageContext ) )
