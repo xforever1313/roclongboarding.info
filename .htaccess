@@ -2,3 +2,6 @@ RewriteEngine On
 RewriteCond %{HTTPS} !=on
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Prevent Chrome from tracking people:
+# Taken from https://paramdeo.com/blog/opting-your-website-out-of-googles-floc-network
+Header always set Permissions-Policy: interest-cohort=()
