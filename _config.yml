@@ -16,6 +16,19 @@ githubissues: https://github.com/xforever1313/roclongboarding.info/issues
 
 disqus_shortname: roclongboarding-info
 
+# ActivtyPub:
+actpub_outbox: https://www.roclongboarding.info/activitypub/outbox.json
+actpub_inbox: https://www.roclongboarding.info/activitypub/inbox.json
+actpub_profileUrl: https://www.roclongboarding.info/activitypub/profile.json
+actpub_username: posts
+actpub_fullname: www.roclongboarding.info
+actpub_website: https://www.roclongboarding.info
+actpub_github: https://github.com/xforever1313/roclongboarding.info
+actpub_icon: "https://www.roclongboarding.info/static/favicons/favicon-310.png"
+actpub_created: "2020-09-07T00:00:00Z"
+actpub_summary: "I post whenever there's a new post on Rochester Longboarding Info, the site about places to Longboard in Rochester, NY."
+actpub_publicKeyFile: "activitypub/public.pem"
+
 exclude:
  - .gitignore
  - .git
