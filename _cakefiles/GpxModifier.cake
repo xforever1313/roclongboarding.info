@@ -1,6 +1,6 @@
 // This file contains classes that strip all but the important data from GPX files.
 
-#addin nuget:?package=Cake.ArgumentBinder&version=0.2.2
+#addin nuget:?package=Cake.ArgumentBinder&version=3.0.0
 
 using System.Xml.Linq;
 

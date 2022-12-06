@@ -38,7 +38,7 @@ pipeline
             {
                 docker
                 {
-                    image 'mcr.microsoft.com/dotnet/sdk:3.1'
+                    image 'mcr.microsoft.com/dotnet/sdk:6.0'
                     args "-e HOME='${env.WORKSPACE}'"
                     reuseNode true
                 }
@@ -49,7 +49,7 @@ pipeline
                 {
                     steps
                     {
-                        sh 'dotnet tool update Cake.Tool --tool-path ./Cake'
+                        sh 'dotnet tool update Cake.Tool --tool-path ./Cake --version 3.0.0'
                         sh './Cake/dotnet-cake ./checkout/build.cake --showdescription'
                     }
                 }

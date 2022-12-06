@@ -4,7 +4,7 @@ const string gpsDataFolder = "./gpxdata";
 
 #load "_cakefiles/GpxModifier.cake"
 
-const string pretzelExe = "./_pretzel/src/Pretzel/bin/Debug/netcoreapp3.1/Pretzel.dll";
+const string pretzelExe = "./_pretzel/src/Pretzel/bin/Debug/net6.0/Pretzel.dll";
 const string pluginDir = "./_plugins";
 const string categoryPlugin = "./_plugins/Pretzel.Categories.dll";
 const string extensionPlugin = "./_plugins/Pretzel.SethExtensions.dll";
@@ -54,24 +54,24 @@ void BuildPretzel()
 {
     Information( "Building Pretzel..." );
 
-    DotNetCoreBuildSettings settings = new DotNetCoreBuildSettings
+    DotNetBuildSettings settings = new DotNetBuildSettings
     {
         Configuration = "Debug"
     };
 
-    DotNetCoreBuild( "./_pretzel/src/Pretzel.sln", settings );
+    DotNetBuild( "./_pretzel/src/Pretzel.sln", settings );
 
     EnsureDirectoryExists( pluginDir );
 
     // Move Pretzel.Categories.
     {
-        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.Categories/bin/Debug/netstandard2.1/Pretzel.Categories.*" );
+        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.Categories/bin/Debug/net6.0/Pretzel.Categories.*" );
         CopyFiles( files, Directory( pluginDir ) );
     }
 
     // Move Pretzel.SethExtensions
     {
-        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.SethExtensions/bin/Debug/netstandard2.1/Pretzel.SethExtensions.*" );
+        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.SethExtensions/bin/Debug/net6.0/Pretzel.SethExtensions.*" );
         CopyFiles( files, Directory( pluginDir ) );
     }
 
@@ -84,21 +84,20 @@ void BuildPlugin()
 
     Information( "Building Plugin..." );
 
-    DotNetCorePublishSettings  settings = new DotNetCorePublishSettings
+    DotNetPublishSettings  settings = new DotNetPublishSettings
     {
         Configuration = "Debug",
         NoBuild = false,
-        NoRestore = false,
-        PublishTrimmed = true
+        NoRestore = false
     };
 
-    DotNetCorePublish( "./_MapPlugin/MapPlugin.sln", settings );
+    DotNetPublish( "./_MapPlugin/MapPlugin.sln", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.1/publish/MapPlugin.*" );
+    FilePathCollection files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/net6.0/publish/MapPlugin.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
-    files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/netstandard2.1/publish/Geodesy.*" );
+    files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/net6.0/publish/Geodesy.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
     Information( "Building Plugin... Done!" );
