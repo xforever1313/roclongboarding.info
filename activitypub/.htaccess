@@ -1,3 +1,7 @@
+---
+layout: nil
+exclude_from_navbar: true
+---
 <Files webfinger>
     ForceType application/jrd+json
 </Files>

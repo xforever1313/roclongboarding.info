@@ -1,5 +1,0 @@
----
-layout: nil
----
-@using Pretzel.Logic.Templating.Context
-@Include( "activitypub_profile.cshtml", Model, typeof( PageContext ) )
