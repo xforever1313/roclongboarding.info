@@ -1,0 +1,6 @@
+<Files webfinger>
+    ForceType application/jrd+json
+</Files>
+<Files *.json>
+    ForceType application/activity+json
+</Files>

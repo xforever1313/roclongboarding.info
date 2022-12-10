@@ -19,6 +19,7 @@ disqus_shortname: roclongboarding-info
 # ActivtyPub:
 actpub_outbox: https://www.roclongboarding.info/activitypub/outbox.json
 actpub_inbox: https://www.roclongboarding.info/activitypub/inbox.json
+actpub_following: https://www.roclongboarding.info/activitypub/following.json
 actpub_profileUrl: https://www.roclongboarding.info/activitypub/profile.json
 actpub_username: posts
 actpub_fullname: www.roclongboarding.info
