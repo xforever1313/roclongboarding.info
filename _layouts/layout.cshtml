@@ -86,6 +86,7 @@
                     else if(
                         ( ignorePages.Contains( @thePage.Id ) == false ) &&
                         ( string.IsNullOrEmpty( @thePage.Id ) == false ) &&
+                        ( @thePage.Filepath.Contains( "404" ) == false ) &&
                         ( @thePage.Filepath.Contains( "activitypub" ) == false ) &&
                         ( @thePage.Id.Contains( ".well-known" ) == false ) && // Don't include lets encrypt stuff.
                         ( "nil".Equals( thePage.Bag["layout"] ) == false )
