@@ -23,7 +23,7 @@ actpub_inbox: true
 actpub_profileurl: posts.html
 actpub_username: posts
 actpub_icon: "https://www.roclongboarding.info/static/favicons/favicon-310.png"
-actpub_created: "2020-09-07T00:00:00Z"
+actpub_created: "2020-09-07T00:00:00.0000000Z"
 actpub_summary: "I post whenever there's a new post on Rochester Longboarding Info, the site about places to Longboard in Rochester, NY."
 actpub_publickeyfile: "activitypub/public.pem"
 actpub_following:
