@@ -98,13 +98,13 @@ void BuildPlugin()
         NoRestore = false
     };
 
-    DotNetPublish( "./_MapPlugin/MapPlugin.sln", settings );
+    DotNetPublish( "./_WebsitePlugin/WebsitePlugin.sln", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/net6.0/publish/MapPlugin.*" );
+    FilePathCollection files = GetFiles( "./_WebsitePlugin/MapPlugin/bin/Debug/net6.0/publish/MapPlugin.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
-    files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/net6.0/publish/Geodesy.*" );
+    files = GetFiles( "./_WebsitePlugin/MapPlugin/bin/Debug/net6.0/publish/Geodesy.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
     Information( "Building Plugin... Done!" );
