@@ -16,7 +16,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
 namespace WebsiteTests;
@@ -82,19 +84,20 @@ public sealed class JsonValidationTests
             )
         );
 
-        var info = new FileInfo(
+        var fileToCheck = new FileInfo(
             Path.Combine( TestContants.SiteOutput, "activitypub", actPubFileName )
         );
 
-        Assert.IsTrue( info.Exists, $"{info.FullName} does not exist! Was the site built?" );
+        Assert.IsTrue( fileToCheck.Exists, $"{fileToCheck.FullName} does not exist! Was the site built?" );
 
-        using( StreamReader file = File.OpenText( actPubSchemaFile.FullName ) )
-        using( var reader = new JsonTextReader( file ) )
+        JSchema schema;
+        using( StreamReader schemaFile = File.OpenText( actPubSchemaFile.FullName ) )
+        using( var schemaReader = new JsonTextReader( schemaFile ) )
         {
             var resolver = new JSchemaUrlResolver();
 
-            JSchema schema = JSchema.Load(
-                reader,
+            schema = JSchema.Load(
+                schemaReader,
                 new JSchemaReaderSettings
                 {
                     Resolver = resolver,
@@ -103,8 +106,26 @@ public sealed class JsonValidationTests
                     BaseUri = new Uri( actPubSchemaFile.FullName )
                 }
             );
+        }
 
-            // validate JSON
+        // validate JSON
+        JToken json;
+        using( StreamReader fileReader = File.OpenText( actPubSchemaFile.FullName ) )
+        using( var fileTextReader = new JsonTextReader( fileReader ) )
+        {
+            json = JToken.Load( fileTextReader );
+        }
+        
+        IList<string> errorMessages;
+        bool isValid = json.IsValid( schema, out errorMessages );
+        if( isValid == false )
+        {
+            var builder = new StringBuilder();
+            foreach( string error in errorMessages )
+            {
+                builder.AppendLine( "- " + error );
+            }
+            Assert.Fail( builder.ToString() );
         }
     }
 }
