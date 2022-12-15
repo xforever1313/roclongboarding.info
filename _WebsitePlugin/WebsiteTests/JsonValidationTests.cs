@@ -16,6 +16,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
+
 namespace WebsiteTests;
 
 [TestClass]
@@ -24,31 +27,84 @@ public sealed class JsonValidationTests
     // ---------------- Tests ----------------
 
     [TestMethod]
-    public void OutboxValidationTest()
+    public void OutboxJsonLdValidationTest()
     {
-        DoValidationTest( "outbox.json" );
+        DoValidationTest( "outbox.json", "JSONLD.json" );
     }
 
     [TestMethod]
-    public void FollowingValidationTest()
+    public void FollowingJsonLdValidationTest()
     {
-        DoValidationTest( "following.json" );
+        DoValidationTest( "following.json", "JSONLD.json" );
     }
 
     [TestMethod]
-    public void ProfileValidationTest()
+    public void ProfileJsonLdValidationTest()
     {
-        DoValidationTest( "profile.json" );
+        DoValidationTest( "profile.json", "JSONLD.json" );
+    }
+
+    [TestMethod]
+    public void OutboxActivityPubValidationTest()
+    {
+        DoValidationTest( "outbox.json", "ActivityPub.json" );
+    }
+
+    [TestMethod]
+    public void FollowingActivityPubValidationTest()
+    {
+        DoValidationTest( "following.json", "ActivityPub.json" );
+    }
+
+    [TestMethod]
+    public void ProfileActivityPubValidationTest()
+    {
+        DoValidationTest( "profile.json", "ActivityPub.json" );
     }
 
     // ---------------- Test Helpers ----------------
 
-    private void DoValidationTest( string actPubFileName )
+    private void DoValidationTest( string actPubFileName, string jsonFile )
     {
-        FileInfo info = new FileInfo(
+        var schemaDir = new DirectoryInfo(
+            Path.Combine(
+                TestContants.RepoRoot,
+                "_WebsitePlugin",
+                "WebsiteTests",
+                "ActivityPubSchema"
+            )
+        );
+
+        var actPubSchemaFile = new FileInfo(
+            Path.Combine(
+                schemaDir.FullName,
+                jsonFile
+            )
+        );
+
+        var info = new FileInfo(
             Path.Combine( TestContants.SiteOutput, "activitypub", actPubFileName )
         );
 
         Assert.IsTrue( info.Exists, $"{info.FullName} does not exist! Was the site built?" );
+
+        using( StreamReader file = File.OpenText( actPubSchemaFile.FullName ) )
+        using( var reader = new JsonTextReader( file ) )
+        {
+            var resolver = new JSchemaUrlResolver();
+
+            JSchema schema = JSchema.Load(
+                reader,
+                new JSchemaReaderSettings
+                {
+                    Resolver = resolver,
+                    // where the schema is being loaded from
+                    // referenced 'address.json' schema will be loaded from disk at 'c:\address.json'
+                    BaseUri = new Uri( actPubSchemaFile.FullName )
+                }
+            );
+
+            // validate JSON
+        }
     }
 }
