@@ -9,6 +9,7 @@ _site
 public/
 _plugins
 tools
+.cake
 .vscode/
 .vs/
 _TestResults/

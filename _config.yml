@@ -37,5 +37,7 @@ exclude:
  - .vs
  - .vscode
  - build.cake
+ - cake.config
+ - .cake
  - tools
  - Readme.md
