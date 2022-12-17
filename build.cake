@@ -1,4 +1,5 @@
 string target = Argument( "target", "taste" );
+string testResultOutput = Argument( "test_result_dir", "_TestResults" );
 
 const string gpsDataFolder = "./gpxdata";
 
@@ -6,6 +7,7 @@ const string gpsDataFolder = "./gpxdata";
 
 const string pretzelExe = "./_pretzel/src/Pretzel/bin/Debug/net6.0/Pretzel.dll";
 const string pluginDir = "./_plugins";
+const string siteDir = "./_plugins";
 const string categoryPlugin = "./_plugins/Pretzel.Categories.dll";
 const string extensionPlugin = "./_plugins/Pretzel.SethExtensions.dll";
 const string activityPubPlugin = "./_plugins/KristofferStrube.ActivityStreams.dll";
@@ -24,11 +26,38 @@ Task( "generate" )
 .Does(
     () =>
     {
-        EnsureDirectoryExists( "_site" );
-        CleanDirectory( "_site" );
+        EnsureDirectoryExists( siteDir );
+        CleanDirectory( siteDir );
         RunPretzel( "bake", true );
     }
 ).Description( "Builds the site for publishing." );
+
+var runTestTask = Task( "run_tests" )
+.Does(
+    () =>
+    {
+        DirectoryPath testResultDir = Directory( testResultOutput );
+        EnsureDirectoryExists( testResultDir );
+        CleanDirectory( testResultDir );
+
+        var settings = new DotNetTestSettings
+        {
+            NoBuild = false,
+            NoRestore = false,
+            Configuration = "Debug",
+            ResultsDirectory = testResultDir,
+            VSTestReportPath = testResultDir.CombineWithFilePath( "SiteTestResults.xml" ),
+            Verbosity = DotNetVerbosity.Normal
+        };
+
+        DotNetTest( "_WebsitePlugin/WebsiteTests/WebsiteTests.csproj", settings );
+    }
+).Description( "Runs all Tests" );
+
+if( DirectoryExists( siteDir ) == false )
+{
+    runTestTask.IsDependentOn( "generate" );
+}
 
 Task( "build_pretzel" )
 .Does(
@@ -98,13 +127,13 @@ void BuildPlugin()
         NoRestore = false
     };
 
-    DotNetPublish( "./_MapPlugin/MapPlugin.sln", settings );
+    DotNetPublish( "./_WebsitePlugin/MapPlugin/MapPlugin.csproj", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/net6.0/publish/MapPlugin.*" );
+    FilePathCollection files = GetFiles( "./_WebsitePlugin/MapPlugin/bin/Debug/net6.0/publish/MapPlugin.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
-    files = GetFiles( "./_MapPlugin/MapPlugin/bin/Debug/net6.0/publish/Geodesy.*" );
+    files = GetFiles( "./_WebsitePlugin/MapPlugin/bin/Debug/net6.0/publish/Geodesy.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
     Information( "Building Plugin... Done!" );
