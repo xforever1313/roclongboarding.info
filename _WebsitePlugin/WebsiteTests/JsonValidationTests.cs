@@ -66,7 +66,25 @@ public sealed class JsonValidationTests
 
     // ---------------- Test Helpers ----------------
 
-    private void DoValidationTest( string actPubFileName, string jsonFile )
+    private void DoValidationTest( string actPubFileName, string jsonSchemaFileName )
+    {
+        JToken json = GetJsonToTest( actPubFileName );
+        JSchema schema = GetSchema( jsonSchemaFileName );
+        
+        IList<string> errorMessages;
+        bool isValid = json.IsValid( schema, out errorMessages );
+        if( isValid == false )
+        {
+            var builder = new StringBuilder();
+            foreach( string error in errorMessages )
+            {
+                builder.AppendLine( "- " + error );
+            }
+            Assert.Fail( builder.ToString() );
+        }
+    }
+
+    private JSchema GetSchema( string jsonSchemaFileName )
     {
         var schemaDir = new DirectoryInfo(
             Path.Combine(
@@ -80,52 +98,39 @@ public sealed class JsonValidationTests
         var actPubSchemaFile = new FileInfo(
             Path.Combine(
                 schemaDir.FullName,
-                jsonFile
+                jsonSchemaFileName
             )
         );
 
+        using( StreamReader schemaFile = File.OpenText( actPubSchemaFile.FullName ) )
+        using( var schemaReader = new JsonTextReader( schemaFile ) )
+        {
+            var resolver = new JSchemaUrlResolver();
+
+            return JSchema.Load(
+                schemaReader,
+                new JSchemaReaderSettings
+                {
+                    Resolver = resolver,
+                    BaseUri = new Uri( actPubSchemaFile.FullName ),
+                    ResolveSchemaReferences = true
+                }
+            );
+        }
+    }
+
+    private JToken GetJsonToTest( string actPubFileName )
+    {
         var fileToCheck = new FileInfo(
             Path.Combine( TestContants.SiteOutput, "activitypub", actPubFileName )
         );
 
         Assert.IsTrue( fileToCheck.Exists, $"{fileToCheck.FullName} does not exist! Was the site built?" );
 
-        JSchema schema;
-        using( StreamReader schemaFile = File.OpenText( actPubSchemaFile.FullName ) )
-        using( var schemaReader = new JsonTextReader( schemaFile ) )
-        {
-            var resolver = new JSchemaUrlResolver();
-
-            schema = JSchema.Load(
-                schemaReader,
-                new JSchemaReaderSettings
-                {
-                    Resolver = resolver,
-                    // where the schema is being loaded from
-                    // referenced 'address.json' schema will be loaded from disk at 'c:\address.json'
-                    BaseUri = new Uri( actPubSchemaFile.FullName )
-                }
-            );
-        }
-
-        // validate JSON
-        JToken json;
-        using( StreamReader fileReader = File.OpenText( actPubSchemaFile.FullName ) )
+        using( StreamReader fileReader = File.OpenText( fileToCheck.FullName ) )
         using( var fileTextReader = new JsonTextReader( fileReader ) )
         {
-            json = JToken.Load( fileTextReader );
-        }
-        
-        IList<string> errorMessages;
-        bool isValid = json.IsValid( schema, out errorMessages );
-        if( isValid == false )
-        {
-            var builder = new StringBuilder();
-            foreach( string error in errorMessages )
-            {
-                builder.AppendLine( "- " + error );
-            }
-            Assert.Fail( builder.ToString() );
+            return JToken.Load( fileTextReader );
         }
     }
 }
