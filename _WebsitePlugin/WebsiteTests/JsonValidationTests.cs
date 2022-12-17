@@ -26,100 +26,138 @@ namespace WebsiteTests;
 [TestClass]
 public sealed class JsonValidationTests
 {
+    // ---------------- Fields ----------------
+
+    private static readonly DirectoryInfo SchemaDir = new DirectoryInfo(
+        Path.Combine(
+            TestContants.RepoRoot,
+            "_WebsitePlugin",
+            "WebsiteTests",
+            "ActivityPubSchema"
+        )
+    );
+
+    private static readonly FileInfo ActPubSchemaFile = new FileInfo(
+        Path.Combine(
+            SchemaDir.FullName,
+            "ActivityPub.json"
+        )
+    );
+
+    private static readonly FileInfo JsonLdSchemaFile = new FileInfo(
+        Path.Combine(
+            SchemaDir.FullName,
+            "JSONLD.json"
+        )
+    );
+
     // ---------------- Tests ----------------
 
     [TestMethod]
     public void OutboxJsonLdValidationTest()
     {
-        DoValidationTest( "outbox.json", "JSONLD.json" );
+        DoJsonLdSchemaTest( "outbox.json" );
     }
 
     [TestMethod]
     public void FollowingJsonLdValidationTest()
     {
-        DoValidationTest( "following.json", "JSONLD.json" );
+        DoJsonLdSchemaTest( "following.json" );
     }
 
     [TestMethod]
     public void ProfileJsonLdValidationTest()
     {
-        DoValidationTest( "profile.json", "JSONLD.json" );
+        DoJsonLdSchemaTest( "profile.json" );
     }
 
     [TestMethod]
     public void OutboxActivityPubValidationTest()
     {
-        DoValidationTest( "outbox.json", "ActivityPub.json" );
+        DoActivityPubValidationTest( "outbox.json" );
     }
 
     [TestMethod]
     public void FollowingActivityPubValidationTest()
     {
-        DoValidationTest( "following.json", "ActivityPub.json" );
+        DoActivityPubValidationTest( "following.json" );
     }
 
     [TestMethod]
     public void ProfileActivityPubValidationTest()
     {
-        DoValidationTest( "profile.json", "ActivityPub.json" );
+        DoActivityPubValidationTest( "profile.json" );
     }
 
     // ---------------- Test Helpers ----------------
 
-    private void DoValidationTest( string actPubFileName, string jsonSchemaFileName )
+    private void DoJsonLdSchemaTest( string actPubFileName )
     {
         JToken json = GetJsonToTest( actPubFileName );
-        JSchema schema = GetSchema( jsonSchemaFileName );
-        
-        IList<string> errorMessages;
-        bool isValid = json.IsValid( schema, out errorMessages );
-        if( isValid == false )
-        {
-            var builder = new StringBuilder();
-            foreach( string error in errorMessages )
-            {
-                builder.AppendLine( "- " + error );
-            }
-            Assert.Fail( builder.ToString() );
-        }
+        JSchema schema = GetJsonLdSchema();
+
+        Validate( json, schema );
     }
 
-    private JSchema GetSchema( string jsonSchemaFileName )
+    private void DoActivityPubValidationTest( string actPubFileName )
     {
-        var schemaDir = new DirectoryInfo(
-            Path.Combine(
-                TestContants.RepoRoot,
-                "_WebsitePlugin",
-                "WebsiteTests",
-                "ActivityPubSchema"
-            )
-        );
+        JToken json = GetJsonToTest( actPubFileName );
+        JSchema schema = GetActPubSchema();
 
-        var actPubSchemaFile = new FileInfo(
-            Path.Combine(
-                schemaDir.FullName,
-                jsonSchemaFileName
-            )
-        );
+        Validate( json, schema );
+    }
 
-        using( StreamReader schemaFile = File.OpenText( actPubSchemaFile.FullName ) )
+    private static JSchema GetJsonLdSchema()
+    {
+        using( StreamReader schemaFile = File.OpenText( JsonLdSchemaFile.FullName ) )
         using( var schemaReader = new JsonTextReader( schemaFile ) )
         {
-            var resolver = new JSchemaUrlResolver();
-
             return JSchema.Load(
                 schemaReader,
                 new JSchemaReaderSettings
                 {
-                    Resolver = resolver,
-                    BaseUri = new Uri( actPubSchemaFile.FullName ),
                     ResolveSchemaReferences = true
                 }
             );
         }
     }
 
-    private JToken GetJsonToTest( string actPubFileName )
+    private static JSchema GetActPubSchema()
+    {
+        var typeDir = new DirectoryInfo(
+            Path.Combine( SchemaDir.FullName, "type" )
+        );
+
+        var resolver2 = new JSchemaPreloadedResolver();
+        resolver2.Add(
+            new Uri( "http://www.w3.org/ns/activitystreams/JSONLD.json" ),
+            File.ReadAllBytes( JsonLdSchemaFile.FullName )
+        );
+
+        foreach( FileInfo file in typeDir.GetFiles( "*.json" ) )
+        {
+            var uri = new Uri( @$"http://www.w3.org/ns/activitystreams/{file.Name}", UriKind.RelativeOrAbsolute );
+            resolver2.Add(
+                uri,
+                File.ReadAllBytes( file.FullName )
+            );
+        }
+
+        using( StreamReader schemaFile = File.OpenText( ActPubSchemaFile.FullName ) )
+        using( var schemaReader = new JsonTextReader( schemaFile ) )
+        {
+            return JSchema.Load(
+                schemaReader,
+                new JSchemaReaderSettings
+                {
+                    Resolver = resolver2,
+                    ResolveSchemaReferences = true
+                }
+            );
+        }
+    }
+
+    private static JToken GetJsonToTest( string actPubFileName )
     {
         var fileToCheck = new FileInfo(
             Path.Combine( TestContants.SiteOutput, "activitypub", actPubFileName )
@@ -131,6 +169,21 @@ public sealed class JsonValidationTests
         using( var fileTextReader = new JsonTextReader( fileReader ) )
         {
             return JToken.Load( fileTextReader );
+        }
+    }
+
+    private static void Validate( JToken json, JSchema schema )
+    {
+        IList<string> errorMessages;
+        bool isValid = json.IsValid( schema, out errorMessages );
+        if( isValid == false )
+        {
+            var builder = new StringBuilder();
+            foreach( string error in errorMessages )
+            {
+                builder.AppendLine( "- " + error );
+            }
+            Assert.Fail( builder.ToString() );
         }
     }
 }
