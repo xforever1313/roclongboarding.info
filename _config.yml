@@ -19,7 +19,7 @@ disqus_shortname: roclongboarding-info
 # ActivtyPub:
 actpub_directory: "activitypub"
 actpub_outbox: true
-actpub_inbox: true
+actpub_inbox_url: "https://activitypub.shendrick.net/inboxservice/inbox/roclongboarding"
 actpub_profileurl: posts.html
 actpub_username: posts
 actpub_icon: "https://www.roclongboarding.info/static/favicons/favicon-310.png"
