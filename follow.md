@@ -4,12 +4,11 @@ title: "Follow Us!"
 description: "Where to follow us on the internet."
 comments: false
 icon: fa-users
-tags: [activity, ActivityPub, Follow, Mastodon, Pub]
+tags: [atom, rss, github]
 ---
 
-## Mastodon / Activity Pub
+You can follow updates here in the following ways:
 
-If you're on [Mastodon](https://joinmastodon.org/) or any other network that supports [ActivityPub](https://activitypub.rocks/), this is the account you can follow to be notified when a new post happens:
-
-@using Pretzel.SethExtensions.ActivityPub;
-@@@Model.Site.GetWebFingerName()
+* [ATOM Feed](/atom.xml)
+* [RSS Feed](/rss.xml)
+* [GitHub](@Model.Site.Config["github"])

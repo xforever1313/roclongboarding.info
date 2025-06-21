@@ -15,19 +15,16 @@ A location should be safe and practical to longboard on.  For example, dirt path
 
 A location should be legal for the general public to access.  If someone needs to break trespassing laws to get access to a location, it is not a good location.
 
-## How to Submit
+## How to Submit (Web form)
 
-### Tell us about a location
+There will soon be a web form that will help one submit locations and do all the stuff below automatically.
 
-The easiest thing to do is drop us a tip on where to go longboarding.  You just need to send the location to our email at ```@Model.Site.Config["contact"]```.
-
-You can also submit an issue to our [GitHub](@Model.Site.Config["githubissues"]) with a suggestion if you have an account there.
-
-If you want your name or username to be included in the location post under a "Suggested By" section, indicate so in the submission.  If you have a website, social media, whatever you want to associate with yourself, include that as well, and we'll link it to your name under the "Suggest By" section.  If you do not explicitly indicate that you want to use your name under the "Suggested By" section, we'll assume that you do not want to.
+## How to Submit (Advanced)
 
 ### Submit a Guest Post
 
 Please keep in mind the following when submitting a guest post:
+
 * It may take time for us to process a submission.
 * Your submission can be rejected for any reason.
 * If you write a guest post, all posts are [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/).  If you are not comfortable releasing your posts under this license, do not submit a guest post.
@@ -37,6 +34,7 @@ Please keep in mind the following when submitting a guest post:
 * [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) data is recommended if you want to include the area on a map.  GPX data is stripped of everything other than latitude, longitude, and elevation information before being added to the website.  You can download GPX data from pretty much any service that tracks your GPS data such as [Strava](https://www.strava.com/).  Please include GPX data in your submission, and indicate with "segment" it goes with.
 
 Posts can include things such as:
+
 * Hazards (things to avoid)
 * Places of Interest (things to checkout)
 * Videos
@@ -46,7 +44,8 @@ Posts can include things such as:
 
 All posts are in the [Markdown](https://en.wikipedia.org/wiki/Markdown) format with some metadata.  You can see an example of what this looks like [here](https://raw.githubusercontent.com/xforever1313/roclongboarding.info/master/_posts/2020-9-7-ErieCanalClinton.md?token=AATVIXUI322VIKQKU6RYUVC7LUXX6).  The metadata at the top is important, as it allows us to plot information on the map.  Below are all the the metadata that must be included in a post:
 
-**Required Metadata**
+#### Required Metadata
+
 * **layout:** should always be set to "location".
 * **title:** The location that is being written about.
 * **author:** Your username or real name; up to you.
@@ -57,7 +56,8 @@ All posts are in the [Markdown](https://en.wikipedia.org/wiki/Markdown) format w
 * **display_map:** If you have GPX data or want to map areas on a map within the post, set this to true, otherwise set it to false.
 * **display_elevation:** If you have elevation data, set this to true, otherwise false.
 
-**Metadata if "display_map" is set to true**
+#### Metadata if "display_map" is set to true
+
 * **center_point:** Where the marker is placed on the [BigMap](/bigmap.html) for the location.  It is a latitude, longitude pair.  This is required.
 * **points_of_interest:** Any locations that someone should checkout.  Must include a name and a latitude/longitude pair.
 * **hazards:** Any locations that someone should avoid or be cautious of.  Must include a name and a latitude/longitude pair.
@@ -69,7 +69,8 @@ All posts are in the [Markdown](https://en.wikipedia.org/wiki/Markdown) format w
 * **lame_polys:**  Same as cool_polys and meh_polys other than these areas are dangerous or impossible to longboard on.
 
 An example of all of this:
-```
+
+```txt
 ---
 layout: location
 title: "Some Cool Location"
