@@ -4,6 +4,3 @@
 [submodule "_includes"]
 	path = _includes
 	url = https://github.com/xforever1313/StaticWebsitesCommon.git
-[submodule "_WebsitePlugin/WebsiteTests/ActivityPubSchema"]
-	path = _WebsitePlugin/WebsiteTests/ActivityPubSchema
-	url = https://github.com/redaktor/ActivityPubSchema.git
