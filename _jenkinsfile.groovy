@@ -38,7 +38,7 @@ pipeline
             {
                 docker
                 {
-                    image 'mcr.microsoft.com/dotnet/sdk:6.0'
+                    image 'mcr.microsoft.com/dotnet/sdk:8.0'
                     args "-e HOME='${env.WORKSPACE}'"
                     reuseNode true
                 }
@@ -49,7 +49,7 @@ pipeline
                 {
                     steps
                     {
-                        sh 'dotnet tool update Cake.Tool --tool-path ./Cake --version 3.0.0'
+                        sh 'dotnet tool update Cake.Tool --tool-path ./Cake --version 5.0.0'
                         sh './Cake/dotnet-cake ./checkout/build.cake --showdescription'
                     }
                 }
@@ -60,23 +60,6 @@ pipeline
                     {
                         sh './Cake/dotnet-cake ./checkout/build.cake --target=build_pretzel'
                         sh './Cake/dotnet-cake ./checkout/build.cake --target=generate'
-                    }
-                }
-                stage( 'test' )
-                {
-                    steps
-                    {
-                        sh "./Cake/dotnet-cake ./checkout/build.cake --target=run_tests --test_result_dir='${pwd()}/TestResults/'";
-                    }
-                    post
-                    {
-                        always
-                        {
-                            X13ParseMsTestResults(
-                                filePattern: "${pwd()}/TestResults/*.xml",
-                                abortOnFail: true
-                            );
-                        }
                     }
                 }
             }

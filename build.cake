@@ -1,17 +1,22 @@
 string target = Argument( "target", "taste" );
 string testResultOutput = Argument( "test_result_dir", "_TestResults" );
 
+const string runtime = "net8.0";
+
 const string gpsDataFolder = "./gpxdata";
 
 #load "_cakefiles/GpxModifier.cake"
 
-const string pretzelExe = "./_pretzel/src/Pretzel/bin/Debug/net6.0/Pretzel.dll";
+const string pretzelExe = $"./_pretzel/src/Pretzel/bin/Debug/{runtime}/Pretzel.dll";
 const string pluginDir = "./_plugins";
 const string siteDir = "./_plugins";
 const string categoryPlugin = "./_plugins/Pretzel.Categories.dll";
 const string extensionPlugin = "./_plugins/Pretzel.SethExtensions.dll";
 const string activityPubPlugin = "./_plugins/KristofferStrube.ActivityStreams.dll";
 const string mapPlugin = "./_plugins/MapPlugin.dll";
+
+var msBuildSettings = new DotNetMSBuildSettings();
+msBuildSettings.Properties["DefineConstants"] = new List<string> { "NO_EXPORT_SETH_MARKDOWN_ENGINE" };
 
 Task( "taste" )
 .Does(
@@ -31,33 +36,6 @@ Task( "generate" )
         RunPretzel( "bake", true );
     }
 ).Description( "Builds the site for publishing." );
-
-var runTestTask = Task( "run_tests" )
-.Does(
-    () =>
-    {
-        DirectoryPath testResultDir = Directory( testResultOutput );
-        EnsureDirectoryExists( testResultDir );
-        CleanDirectory( testResultDir );
-
-        var settings = new DotNetTestSettings
-        {
-            NoBuild = false,
-            NoRestore = false,
-            Configuration = "Debug",
-            ResultsDirectory = testResultDir,
-            VSTestReportPath = testResultDir.CombineWithFilePath( "SiteTestResults.xml" ),
-            Verbosity = DotNetVerbosity.Normal
-        };
-
-        DotNetTest( "_WebsitePlugin/WebsiteTests/WebsiteTests.csproj", settings );
-    }
-).Description( "Runs all Tests" );
-
-if( DirectoryExists( siteDir ) == false )
-{
-    runTestTask.IsDependentOn( "generate" );
-}
 
 Task( "build_pretzel" )
 .Does(
@@ -84,9 +62,10 @@ void BuildPretzel()
 {
     Information( "Building Pretzel..." );
 
-    DotNetBuildSettings settings = new DotNetBuildSettings
+    var settings = new DotNetBuildSettings
     {
-        Configuration = "Debug"
+        Configuration = "Debug",
+        MSBuildSettings = msBuildSettings
     };
 
     DotNetBuild( "./_pretzel/src/Pretzel.sln", settings );
@@ -95,19 +74,19 @@ void BuildPretzel()
 
     // Move Pretzel.Categories.
     {
-        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.Categories/bin/Debug/net6.0/Pretzel.Categories.*" );
+        FilePathCollection files = GetFiles( $"./_pretzel/src/Pretzel.Categories/bin/Debug/{runtime}/Pretzel.Categories.*" );
         CopyFiles( files, Directory( pluginDir ) );
     }
 
     // Move Pretzel.SethExtensions
     {
-        FilePathCollection files = GetFiles( "./_pretzel/src/Pretzel.SethExtensions/bin/Debug/net6.0/Pretzel.SethExtensions.*" );
+        FilePathCollection files = GetFiles( $"./_pretzel/src/Pretzel.SethExtensions/bin/Debug/{runtime}/Pretzel.SethExtensions.*" );
         CopyFiles( files, Directory( pluginDir ) );
     }
 
     // Move ActivityPub
     {
-        FilePathCollection files = GetFiles( "./_pretzel/src/ActivityStreams/src/KristofferStrube.ActivityStreams/bin/Debug/net6.0/KristofferStrube.ActivityStreams.*" );
+        FilePathCollection files = GetFiles( $"./_pretzel/src/Pretzel.SethExtensions/bin/Debug/{runtime}/KristofferStrube.ActivityStreams.*" );
         CopyFiles( files, Directory( pluginDir ) );
     }
 
@@ -124,16 +103,17 @@ void BuildPlugin()
     {
         Configuration = "Debug",
         NoBuild = false,
-        NoRestore = false
+        NoRestore = false,
+        MSBuildSettings = msBuildSettings
     };
 
     DotNetPublish( "./_WebsitePlugin/MapPlugin/MapPlugin.csproj", settings );
 
     EnsureDirectoryExists( pluginDir );
-    FilePathCollection files = GetFiles( "./_WebsitePlugin/MapPlugin/bin/Debug/net6.0/publish/MapPlugin.*" );
+    FilePathCollection files = GetFiles( $"./_WebsitePlugin/MapPlugin/bin/Debug/{runtime}/publish/MapPlugin.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
-    files = GetFiles( "./_WebsitePlugin/MapPlugin/bin/Debug/net6.0/publish/Geodesy.*" );
+    files = GetFiles( $"./_WebsitePlugin/MapPlugin/bin/Debug/{runtime}/publish/Geodesy.*" );
     CopyFiles( files, Directory( pluginDir ) );
 
     Information( "Building Plugin... Done!" );

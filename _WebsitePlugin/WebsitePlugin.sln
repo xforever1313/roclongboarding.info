@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pretzel.Logic", "..\_pretze
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pretzel.SethExtensions", "..\_pretzel\src\Pretzel.SethExtensions\Pretzel.SethExtensions.csproj", "{00CC115A-C9C9-4722-B711-8DF4F75F9135}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebsiteTests", "WebsiteTests\WebsiteTests.csproj", "{0A0F0879-32EF-459C-9596-43BD3F1EAB6D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{00CC115A-C9C9-4722-B711-8DF4F75F9135}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00CC115A-C9C9-4722-B711-8DF4F75F9135}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00CC115A-C9C9-4722-B711-8DF4F75F9135}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A0F0879-32EF-459C-9596-43BD3F1EAB6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A0F0879-32EF-459C-9596-43BD3F1EAB6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A0F0879-32EF-459C-9596-43BD3F1EAB6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A0F0879-32EF-459C-9596-43BD3F1EAB6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

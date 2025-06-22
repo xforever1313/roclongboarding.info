@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
-using CommonMark;
 using Pretzel.Logic.Extensibility;
 using Pretzel.Logic.Templating.Context;
 
@@ -43,9 +42,6 @@ namespace MapPlugin
 
         static MapInfoCollection()
         {
-            CommonMarkSettings.Default.OutputDelegate =
-                (doc, output, settings) =>
-                new MapInfoHtmlFormatter(output, settings).WriteDocument(doc);
         }
 
         // ---------------- Properties ----------------

@@ -17,12 +17,13 @@
 //
 
 using System.Text.RegularExpressions;
-using CommonMark;
-using CommonMark.Syntax;
+//using CommonMark;
+//using CommonMark.Syntax;
 using Pretzel.SethExtensions;
 
 namespace MapPlugin
 {
+    #if false
     /// <summary>
     /// Inspired from: https://github.com/Knagis/CommonMark.NET/wiki#htmlformatter
     /// </summary>
@@ -32,33 +33,33 @@ namespace MapPlugin
 
         private static readonly Regex mapIdRegex = new Regex(
             @"#map_(?<docid>\w+)",
-            RegexOptions.ExplicitCapture | RegexOptions.Compiled  
+            RegexOptions.ExplicitCapture | RegexOptions.Compiled
         );
 
         // ---------------- Constructor ----------------
 
-        public MapInfoHtmlFormatter( System.IO.TextWriter target, CommonMarkSettings settings )
-            : base( target, settings )
+        public MapInfoHtmlFormatter(System.IO.TextWriter target, CommonMarkSettings settings)
+            : base(target, settings)
         {
         }
 
         // ---------------- Functions ----------------
 
-        protected override void WriteInlineLinkTag( Inline inline, bool isOpening, bool isClosing, out bool ignoreChildNodes )
+        protected override void WriteInlineLinkTag(Inline inline, bool isOpening, bool isClosing, out bool ignoreChildNodes)
         {
-            if( inline.TargetUrl.StartsWith( "#map_" ) )
+            if (inline.TargetUrl.StartsWith("#map_"))
             {
                 // instruct the formatter to process all nested nodes automatically
-                Match match = mapIdRegex.Match( inline.TargetUrl );
-                if(
+                Match match = mapIdRegex.Match(inline.TargetUrl);
+                if (
                     match.Success &&
-                    ( string.IsNullOrWhiteSpace( match.Groups["docid"].Value ) == false )
+                    (string.IsNullOrWhiteSpace(match.Groups["docid"].Value) == false)
                 )
                 {
                     ignoreChildNodes = false;
 
                     // start and end of each node may be visited separately
-                    if( isOpening )
+                    if (isOpening)
                     {
                         this.Write(
                             $@"<a href=""#map"" id=""{match.Groups["docid"].Value}"">"
@@ -66,20 +67,21 @@ namespace MapPlugin
                     }
 
                     // note that isOpening and isClosing can be true at the same time
-                    if( isClosing )
+                    if (isClosing)
                     {
-                        this.Write( "</a>" );
+                        this.Write("</a>");
                     }
                 }
                 else
                 {
-                    base.WriteInlineLinkTag( inline, isOpening, isClosing, out ignoreChildNodes );
+                    base.WriteInlineLinkTag(inline, isOpening, isClosing, out ignoreChildNodes);
                 }
             }
             else
             {
-                base.WriteInlineLinkTag( inline, isOpening, isClosing, out ignoreChildNodes );
+                base.WriteInlineLinkTag(inline, isOpening, isClosing, out ignoreChildNodes);
             }
         }
     }
+    #endif
 }
